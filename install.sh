@@ -9,6 +9,26 @@ SUDO_WARMED=0
 PASSWORD_CASKS=(zulu@11 zulu@8)
 MAS_APP_IDS=(1503446680 1451685025)
 MAS_APP_NAMES=(PastePal WireGuard)
+DESKTOP_APPS=(
+  "AeroSpace"
+  "AlDente"
+  "Arc"
+  "ChatGPT"
+  "Codex"
+  "Fork"
+  "KeyCastr"
+  "Macs Fan Control"
+  "Obsidian"
+  "OrbStack"
+  "PastePal"
+  "Postman"
+  "Raycast"
+  "Rectangle Pro"
+  "SwiftFormat for Xcode"
+  "TickTick"
+  "Visual Studio Code"
+  "WireGuard"
+)
 
 say() {
   printf '%s\n' "$1"
@@ -209,6 +229,19 @@ link_file() {
   say "🔗 Linked: $target_path -> $source_path"
 }
 
+launch_desktop_apps() {
+  local app
+
+  say "🚀 Launching desktop apps..."
+  for app in "${DESKTOP_APPS[@]}"; do
+    if open -gj -a "$app" >/dev/null 2>&1; then
+      say "✅ Launched: $app"
+    else
+      say "⚠️  Could not launch: $app"
+    fi
+  done
+}
+
 say "✨ Dotfiles setup"
 say "📍 Source: $DOTFILES_DIR"
 say ""
@@ -241,6 +274,9 @@ link_file "$DOTFILES_DIR/config/iterm2/com.googlecode.iterm2.plist" "$HOME/Libra
 
 say ""
 "$DOTFILES_DIR/scripts/macos.sh"
+
+say ""
+launch_desktop_apps
 
 say ""
 say "👑 Dotfiles installed."
