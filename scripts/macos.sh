@@ -68,12 +68,18 @@ defaults write com.apple.dock expose-group-apps -bool true
 add_dock_stack "Downloads" "$HOME/Downloads" 2
 add_dock_stack "Desktop" "$HOME/Desktop" 3
 
+# Show battery percentage in the menu bar.
+defaults write com.apple.menuextra.battery ShowPercent -string YES
+defaults -currentHost write com.apple.controlcenter BatteryShowPercentage -bool true
+
 # Finder defaults.
 defaults write com.apple.finder AppleShowAllFiles -bool true
 defaults write com.apple.finder ShowStatusBar -bool true
 defaults write com.apple.finder FXPreferredViewStyle -string Nlsv
 
+killall ControlCenter >/dev/null 2>&1 || true
 killall Dock >/dev/null 2>&1 || true
 killall Finder >/dev/null 2>&1 || true
+killall SystemUIServer >/dev/null 2>&1 || true
 
 say "✅ macOS tweaks applied."
