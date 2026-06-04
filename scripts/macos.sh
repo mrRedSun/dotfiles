@@ -5,6 +5,20 @@ say() {
   printf '%s\n' "$1"
 }
 
+add_dock_stack() {
+  local label="$1"
+  local path="$2"
+  local arrangement="$3"
+
+  if defaults read com.apple.dock persistent-others 2>/dev/null | grep -Fq "file://$path/"; then
+    say "✅ Dock stack already present: $label"
+    return 0
+  fi
+
+  defaults write com.apple.dock persistent-others -array-add \
+    "<dict><key>tile-data</key><dict><key>arrangement</key><integer>$arrangement</integer><key>displayas</key><integer>0</integer><key>file-data</key><dict><key>_CFURLString</key><string>file://$path/</string><key>_CFURLStringType</key><integer>15</integer></dict><key>file-label</key><string>$label</string><key>preferreditemsize</key><integer>-1</integer><key>showas</key><integer>0</integer></dict><key>tile-type</key><string>directory-tile</string></dict>"
+}
+
 say "🍎 Applying macOS tweaks..."
 
 # Make press-and-hold repeat keys instead of showing the accent picker.
@@ -22,6 +36,7 @@ defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 defaults write -g AppleSpacesSwitchOnActivate -bool false
 defaults write com.apple.spaces spans-displays -bool true
+defaults write -g com.apple.swipescrolldirection -bool false
 
 # Keep the Dock out of the way.
 defaults write com.apple.dock orientation -string right
@@ -31,6 +46,8 @@ defaults write com.apple.dock autohide-time-modifier -float 0
 defaults write com.apple.dock launchanim -bool false
 defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock expose-group-apps -bool true
+add_dock_stack "Downloads" "$HOME/Downloads" 2
+add_dock_stack "Desktop" "$HOME/Desktop" 3
 
 # Finder defaults.
 defaults write com.apple.finder AppleShowAllFiles -bool true
