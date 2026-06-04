@@ -1,0 +1,10 @@
+[core]
+	excludesfile = ~/.gitignore
+[push]
+	autoSetupRemote = true
+[pull]
+	rebase = true
+[rebase]
+	autoStash = true
+[include]
+	path = ~/.gitconfig.local
