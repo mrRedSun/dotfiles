@@ -30,6 +30,7 @@ DESKTOP_APPS=(
   "TickTick"
   "Visual Studio Code"
   "WireGuard"
+  "Xcodes"
 )
 
 say() {
