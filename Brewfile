@@ -23,6 +23,7 @@ brew "killport"
 brew "rename"
 brew "tmux"
 brew "neovim"
+brew "mas"
 
 # Language and build tooling.
 brew "cmake"
@@ -72,6 +73,9 @@ cask "orbstack"
 cask "obsidian"
 cask "pear-devs/pear/pear-desktop"
 cask "postman"
+
+# Mac App Store apps.
+mas "WireGuard", id: 1451685025
 
 # Window management and desktop utilities.
 cask "nikitabobko/tap/aerospace"
