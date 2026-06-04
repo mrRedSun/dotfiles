@@ -10,6 +10,7 @@ This repo currently manages existing dotfiles imported from `~/`. App and tool i
 - Git config: `git/.gitconfig`, `git/.gitignore`, `git/.gitignore_global`
 - Neovim config: `config/nvim`
 - tmux config: `config/tmux/.tmux.conf`
+- AeroSpace config: `config/aerospace/aerospace.toml`
 - Homebrew package list: `Brewfile`
 - Install script: `install.sh`
 
