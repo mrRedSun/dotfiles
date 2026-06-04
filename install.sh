@@ -6,7 +6,7 @@ BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 BREW_BIN=""
 SUDO_KEEPALIVE_PID=""
 SUDO_WARMED=0
-PASSWORD_CASKS=(zulu@11 zulu@8)
+PASSWORD_CASKS=(karabiner-elements zulu@11 zulu@8)
 MAS_APP_IDS=(1503446680 1451685025)
 MAS_APP_NAMES=(PastePal WireGuard)
 DESKTOP_APPS=(
@@ -16,6 +16,8 @@ DESKTOP_APPS=(
   "ChatGPT"
   "Codex"
   "Fork"
+  "iTerm"
+  "Karabiner-Elements"
   "KeyCastr"
   "Macs Fan Control"
   "Obsidian"
