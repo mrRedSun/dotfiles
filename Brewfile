@@ -81,6 +81,7 @@ mas "PastePal", id: 1503446680
 mas "WireGuard", id: 1451685025
 
 # Window management and desktop utilities.
+cask "aldente"
 cask "nikitabobko/tap/aerospace"
 cask "keycastr"
 cask "macs-fan-control"
