@@ -73,6 +73,7 @@ cask "orbstack"
 cask "obsidian"
 cask "pear-devs/pear/pear-desktop"
 cask "postman"
+cask "rectangle-pro"
 cask "visual-studio-code"
 
 # Mac App Store apps.
