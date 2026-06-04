@@ -31,6 +31,7 @@ defaults write -g NSAutomaticCapitalizationEnabled -bool false
 defaults write -g NSAutomaticDashSubstitutionEnabled -bool false
 defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
 defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
+defaults write kCFPreferencesAnyApplication TSMLanguageIndicatorEnabled -bool false
 
 # Reduce system window motion.
 defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
