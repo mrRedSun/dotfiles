@@ -18,6 +18,12 @@ This repo currently manages existing dotfiles imported from `~/`. App and tool i
 
 ## Install
 
+On a new Mac without Homebrew installed yet:
+
+```sh
+mkdir -p ~/Projects && git clone git@github.com:mrRedSun/dotfiles.git ~/Projects/dotfiles && cd ~/Projects/dotfiles && (command -v brew >/dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)") && ./install.sh && brew bundle --file Brewfile
+```
+
 From this repo:
 
 ```sh
