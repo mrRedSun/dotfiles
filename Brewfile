@@ -73,6 +73,7 @@ cask "orbstack"
 cask "obsidian"
 cask "pear-devs/pear/pear-desktop"
 cask "postman"
+cask "visual-studio-code"
 
 # Mac App Store apps.
 mas "WireGuard", id: 1451685025
