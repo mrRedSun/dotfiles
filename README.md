@@ -35,7 +35,7 @@ The installer creates symlinks from this repo into your home directory. If a tar
 
 The installer is safe to run repeatedly. If this directory is a Git checkout with an upstream branch and no local changes, it pulls the latest dotfiles with `git pull --ff-only` before linking. If local changes are present, it skips the pull and keeps going.
 
-It also applies a few macOS defaults: disables press-and-hold accent picking for Vim-style key repeat, puts the Dock on the right, enables Dock autohide, and removes Dock show/hide animation delay.
+It also applies a few macOS defaults: disables press-and-hold accent picking for Vim-style key repeat, disables smart typography substitutions, reduces window motion, prevents Spaces from switching automatically when activating apps, puts the Dock on the right, enables Dock autohide, removes Dock show/hide animation delay, hides recent Dock apps, shows hidden files in Finder, and enables the Finder status bar.
 
 ## Homebrew
 
