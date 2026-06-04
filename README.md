@@ -13,6 +13,7 @@ This repo currently manages existing dotfiles imported from `~/`. App and tool i
 - AeroSpace config: `config/aerospace/aerospace.toml`
 - Karabiner-Elements config: `config/karabiner`
 - iTerm2 preferences: `config/iterm2/com.googlecode.iterm2.plist`
+- Rectangle Pro export: `config/rectangle-pro/RectangleProConfig.json`
 - macOS tweaks: `scripts/macos.sh`
 - Homebrew package list: `Brewfile`
 - Install script: `install.sh`
@@ -46,6 +47,18 @@ brew bundle --file Brewfile
 ```
 
 The `Brewfile` is intentionally curated from the current machine. It does not include every installed transitive library, generated package, VS Code extension, or one-off app.
+
+## Manual Imports
+
+Some apps do not provide a safe command-line import path for public dotfiles.
+
+Rectangle Pro preferences can be restored from:
+
+```text
+config/rectangle-pro/RectangleProConfig.json
+```
+
+Import it from Rectangle Pro's preferences UI.
 
 ## Customize
 
