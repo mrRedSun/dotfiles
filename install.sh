@@ -80,4 +80,7 @@ link_file "$DOTFILES_DIR/config/karabiner" "$HOME/.config/karabiner"
 link_file "$DOTFILES_DIR/config/iterm2/com.googlecode.iterm2.plist" "$HOME/Library/Preferences/com.googlecode.iterm2.plist"
 
 say ""
+"$DOTFILES_DIR/scripts/macos.sh"
+
+say ""
 say "👑 Dotfiles installed."
