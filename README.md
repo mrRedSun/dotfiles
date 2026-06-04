@@ -1,8 +1,6 @@
 # Dotfiles
 
-Personal development environment configuration.
-
-This repo currently manages existing dotfiles imported from `~/`. App and tool installation can be added later with a `Brewfile` or another bootstrap layer.
+Personal development environment configuration and bootstrap script.
 
 ## What's Included
 
@@ -20,10 +18,10 @@ This repo currently manages existing dotfiles imported from `~/`. App and tool i
 
 ## Install
 
-On a new Mac without Homebrew installed yet, install Homebrew, link dotfiles, apply macOS tweaks, and install the Brewfile package list:
+On a new Mac, clone the repo and run the installer:
 
 ```sh
-mkdir -p ~/Projects && git clone https://github.com/mrRedSun/dotfiles.git ~/Projects/dotfiles && cd ~/Projects/dotfiles && (command -v brew >/dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)") && BREW_BIN="$(command -v brew || ([ -x /opt/homebrew/bin/brew ] && printf /opt/homebrew/bin/brew) || ([ -x /usr/local/bin/brew ] && printf /usr/local/bin/brew))" && eval "$("$BREW_BIN" shellenv)" && ./install.sh && "$BREW_BIN" bundle --file Brewfile
+mkdir -p ~/Projects && git clone https://github.com/mrRedSun/dotfiles.git ~/Projects/dotfiles && cd ~/Projects/dotfiles && ./install.sh
 ```
 
 From this repo:
@@ -32,7 +30,9 @@ From this repo:
 ./install.sh
 ```
 
-The installer creates symlinks from this repo into your home directory. If a target file already exists and is not already the expected symlink, it is moved into `~/.dotfiles-backup/<timestamp>/` before the new link is created.
+The installer installs Homebrew if needed, installs the selected Brewfile packages, creates symlinks from this repo into your home directory, and applies macOS tweaks. If a target file already exists and is not already the expected symlink, it is moved into `~/.dotfiles-backup/<timestamp>/` before the new link is created.
+
+Run the installer from an interactive terminal. Some Homebrew casks and Mac App Store installs need admin rights; the installer asks for your password once up front and keeps that sudo session alive until it finishes.
 
 The installer is safe to run repeatedly. If this directory is a Git checkout with an upstream branch and no local changes, it pulls the latest dotfiles with `git pull --ff-only` before linking. If local changes are present, it skips the pull and keeps going.
 
@@ -40,13 +40,7 @@ It also applies a few macOS defaults: disables press-and-hold accent picking for
 
 ## Homebrew
 
-Install the selected package list with:
-
-```sh
-brew bundle --file Brewfile
-```
-
-The `Brewfile` is intentionally curated from the current machine. It does not include every installed transitive library, generated package, VS Code extension, or one-off app.
+The `Brewfile` is installed by `./install.sh` and is intentionally curated from the current machine. It does not include every installed transitive library, generated package, VS Code extension, or one-off app.
 
 ## Manual Imports
 

@@ -2,7 +2,6 @@
 tap "leoafarias/fvm"
 tap "nikitabobko/tap"
 tap "pear-devs/pear"
-tap "xcodesorg/made"
 
 # Core CLI utilities.
 brew "git"
@@ -39,7 +38,7 @@ brew "rbenv"
 brew "openjdk@17"
 brew "openjdk@21"
 brew "leoafarias/fvm/fvm"
-brew "xcodesorg/made/xcodes"
+brew "xcodes"
 
 # Mobile, embedded, and device tooling.
 cask "android-platform-tools"
@@ -74,6 +73,7 @@ cask "orbstack"
 cask "obsidian"
 cask "pear-devs/pear/pear-desktop"
 cask "postman"
+cask "raycast"
 cask "rectangle-pro"
 cask "visual-studio-code"
 
