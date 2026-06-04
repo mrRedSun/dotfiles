@@ -12,6 +12,7 @@ This repo currently manages existing dotfiles imported from `~/`. App and tool i
 - tmux config: `config/tmux/.tmux.conf`
 - AeroSpace config: `config/aerospace/aerospace.toml`
 - Karabiner-Elements config: `config/karabiner`
+- iTerm2 preferences: `config/iterm2/com.googlecode.iterm2.plist`
 - Homebrew package list: `Brewfile`
 - Install script: `install.sh`
 
