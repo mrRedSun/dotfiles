@@ -38,6 +38,25 @@ defaults write -g AppleSpacesSwitchOnActivate -bool false
 defaults write com.apple.spaces spans-displays -bool true
 defaults write -g com.apple.swipescrolldirection -bool false
 
+# Trackpad and mouse feel.
+defaults write -g com.apple.trackpad.scaling -float 3
+defaults write -g com.apple.mouse.scaling -float 3
+defaults write -g com.apple.trackpad.forceClick -bool true
+for domain in com.apple.AppleMultitouchTrackpad com.apple.driver.AppleBluetoothMultitouch.trackpad; do
+  defaults write "$domain" Clicking -bool false
+  defaults write "$domain" TrackpadRightClick -bool true
+  defaults write "$domain" TrackpadCornerSecondaryClick -int 0
+  defaults write "$domain" TrackpadThreeFingerDrag -bool false
+  defaults write "$domain" TrackpadTwoFingerDoubleTapGesture -int 1
+  defaults write "$domain" TrackpadTwoFingerFromRightEdgeSwipeGesture -int 3
+  defaults write "$domain" TrackpadThreeFingerHorizSwipeGesture -int 2
+  defaults write "$domain" TrackpadThreeFingerVertSwipeGesture -int 2
+  defaults write "$domain" TrackpadFourFingerHorizSwipeGesture -int 2
+  defaults write "$domain" TrackpadFourFingerVertSwipeGesture -int 2
+  defaults write "$domain" FirstClickThreshold -int 1
+  defaults write "$domain" SecondClickThreshold -int 1
+done
+
 # Keep the Dock out of the way.
 defaults write com.apple.dock orientation -string right
 defaults write com.apple.dock autohide -bool true
