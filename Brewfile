@@ -82,6 +82,7 @@ cask "nikitabobko/tap/aerospace"
 cask "keycastr"
 cask "macs-fan-control"
 cask "swiftformat-for-xcode"
+cask "ticktick"
 
 # Fonts and runtimes.
 cask "font-fira-code"
