@@ -11,6 +11,7 @@ This repo currently manages existing dotfiles imported from `~/`. App and tool i
 - Neovim config: `config/nvim`
 - tmux config: `config/tmux/.tmux.conf`
 - AeroSpace config: `config/aerospace/aerospace.toml`
+- Karabiner-Elements config: `config/karabiner`
 - Homebrew package list: `Brewfile`
 - Install script: `install.sh`
 
