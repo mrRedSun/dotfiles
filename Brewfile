@@ -39,6 +39,7 @@ brew "openjdk@17"
 brew "openjdk@21"
 brew "leoafarias/fvm/fvm"
 brew "xcodes"
+cask "xcodes-app"
 
 # Mobile, embedded, and device tooling.
 cask "android-platform-tools"
