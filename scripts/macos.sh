@@ -21,6 +21,7 @@ defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
 # Reduce system window motion.
 defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 defaults write -g AppleSpacesSwitchOnActivate -bool false
+defaults write com.apple.spaces spans-displays -bool true
 
 # Keep the Dock out of the way.
 defaults write com.apple.dock orientation -string right
