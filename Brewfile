@@ -77,6 +77,7 @@ cask "rectangle-pro"
 cask "visual-studio-code"
 
 # Mac App Store apps.
+mas "PastePal", id: 1503446680
 mas "WireGuard", id: 1451685025
 
 # Window management and desktop utilities.
