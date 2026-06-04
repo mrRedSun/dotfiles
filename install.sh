@@ -132,6 +132,19 @@ install_mas_cli() {
   "$BREW_BIN" install mas
 }
 
+needs_password_cask_install() {
+  local cask="$1"
+
+  case "$cask" in
+    karabiner-elements)
+      [[ ! -x "/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli" ]]
+      ;;
+    *)
+      ! "$BREW_BIN" list --cask "$cask" >/dev/null 2>&1
+      ;;
+  esac
+}
+
 warm_sudo() {
   if [[ "$SUDO_WARMED" -eq 1 ]]; then
     return 0
@@ -158,10 +171,11 @@ install_password_dependencies() {
   local missing_casks=()
   local missing_mas_ids=()
   local missing_mas_names=()
+  local cask_action
   local i
 
   for cask in "${PASSWORD_CASKS[@]}"; do
-    if ! "$BREW_BIN" list --cask "$cask" >/dev/null 2>&1; then
+    if needs_password_cask_install "$cask"; then
       missing_casks+=("$cask")
     fi
   done
@@ -187,8 +201,15 @@ install_password_dependencies() {
   done
 
   if [[ "${#missing_casks[@]}" -gt 0 ]]; then
-    say "☕ Installing privileged JDK casks..."
-    "$BREW_BIN" install --cask "${missing_casks[@]}"
+    say "☕ Installing privileged casks..."
+    for cask in "${missing_casks[@]}"; do
+      cask_action=install
+      if "$BREW_BIN" list --cask "$cask" >/dev/null 2>&1; then
+        cask_action=reinstall
+      fi
+
+      "$BREW_BIN" "$cask_action" --cask "$cask"
+    done
   fi
 }
 
@@ -196,12 +217,13 @@ install_dependencies() {
   say "🍺 Homebrew"
   install_homebrew
 
+  install_password_dependencies
+
   if "$BREW_BIN" bundle check --file "$DOTFILES_DIR/Brewfile"; then
     say "✅ Brewfile dependencies already installed."
     return 0
   fi
 
-  install_password_dependencies
   say "📦 Installing Brewfile dependencies..."
   "$BREW_BIN" bundle install --file "$DOTFILES_DIR/Brewfile"
 }
@@ -229,6 +251,30 @@ link_file() {
   mkdir -p "$(dirname "$target_path")"
   ln -s "$source_path" "$target_path"
   say "🔗 Linked: $target_path -> $source_path"
+}
+
+configure_iterm() {
+  local prefs_dir="$DOTFILES_DIR/config/iterm2"
+  local prefs_file="$prefs_dir/com.googlecode.iterm2.plist"
+  local target_path="$HOME/Library/Preferences/com.googlecode.iterm2.plist"
+
+  if [[ ! -f "$prefs_file" ]]; then
+    say "⚠️  Missing iTerm preferences: $prefs_file"
+    return 0
+  fi
+
+  say "🖥️  Applying iTerm preferences..."
+  if [[ -L "$target_path" ]] && [[ "$(readlink "$target_path")" == "$prefs_file" ]]; then
+    rm "$target_path"
+  elif [[ -e "$target_path" && ! -L "$target_path" ]]; then
+    mkdir -p "$BACKUP_DIR"
+    mv "$target_path" "$BACKUP_DIR/"
+    say "📦 Backed up: $target_path -> $BACKUP_DIR/"
+  fi
+
+  defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$prefs_dir"
+  defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+  killall cfprefsd >/dev/null 2>&1 || true
 }
 
 launch_desktop_apps() {
@@ -272,7 +318,7 @@ link_file "$DOTFILES_DIR/config/nvim" "$HOME/.config/nvim"
 link_file "$DOTFILES_DIR/config/tmux/.tmux.conf" "$HOME/.config/tmux/.tmux.conf"
 link_file "$DOTFILES_DIR/config/aerospace/aerospace.toml" "$HOME/.aerospace.toml"
 link_file "$DOTFILES_DIR/config/karabiner" "$HOME/.config/karabiner"
-link_file "$DOTFILES_DIR/config/iterm2/com.googlecode.iterm2.plist" "$HOME/Library/Preferences/com.googlecode.iterm2.plist"
+configure_iterm
 
 say ""
 "$DOTFILES_DIR/scripts/macos.sh"
