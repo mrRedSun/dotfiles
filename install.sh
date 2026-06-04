@@ -28,6 +28,16 @@ auto_pull() {
   git -C "$DOTFILES_DIR" pull --ff-only
 }
 
+install_oh_my_zsh() {
+  if [[ -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]]; then
+    say "✅ Oh My Zsh already installed."
+    return 0
+  fi
+
+  say "🎨 Installing Oh My Zsh..."
+  git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
+}
+
 link_file() {
   local source_path="$1"
   local target_path="$2"
@@ -61,6 +71,7 @@ auto_pull
 say ""
 
 say "🐚 Shell"
+install_oh_my_zsh
 link_file "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 link_file "$DOTFILES_DIR/zsh/.zprofile" "$HOME/.zprofile"
 link_file "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv"

@@ -4,7 +4,9 @@ export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 
 export RUBY_CFLAGS="-Wno-error=implicit-function-declaration"
-export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+if /usr/libexec/java_home -v 17 >/dev/null 2>&1; then
+    export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+fi
 
 # 🛣️ Path modifications
 
@@ -83,19 +85,19 @@ export Qt5_DIR="/opt/homebrew/opt/qt@5/lib/cmake/Qt5"
 # Set the custom plugins directory
 ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 
-# Clone zsh-vi-mode plugin if not already present
-if [ ! -d "$ZSH_CUSTOM/plugins/zsh-vi-mode" ]; then
-    git clone https://github.com/jeffreytse/zsh-vi-mode.git "$ZSH_CUSTOM/plugins/zsh-vi-mode"
-fi
+if [[ -d "$ZSH" ]]; then
+    # Clone custom plugins if not already present.
+    if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-vi-mode" ]]; then
+        git clone https://github.com/jeffreytse/zsh-vi-mode.git "$ZSH_CUSTOM/plugins/zsh-vi-mode"
+    fi
 
-# Clone zsh-autosuggestions plugin if not already present
-if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-fi
+    if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
+        git clone https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+    fi
 
-# Clone zsh-syntax-highlighting plugin if not already present
-if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+    if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+    fi
 fi
 
 ZSH_THEME="mira" # set by `omz`
@@ -111,13 +113,13 @@ plugins=(
     flutter
 )
 
-source "$ZSH/oh-my-zsh.sh"
+[[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
 
 ## zsh-autosuggestions configuration
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # Add zsh-syntax-highlighting at the end of the source list for proper loading
-source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+[[ -f "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 ## zsh-autosuggestions configuration
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
