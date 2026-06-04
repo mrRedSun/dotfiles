@@ -76,6 +76,7 @@ say "🛠️ Tools"
 link_file "$DOTFILES_DIR/config/nvim" "$HOME/.config/nvim"
 link_file "$DOTFILES_DIR/config/tmux/.tmux.conf" "$HOME/.config/tmux/.tmux.conf"
 link_file "$DOTFILES_DIR/config/aerospace/aerospace.toml" "$HOME/.aerospace.toml"
+link_file "$DOTFILES_DIR/config/karabiner" "$HOME/.config/karabiner"
 
 say ""
 say "👑 Dotfiles installed."
