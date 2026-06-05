@@ -22,6 +22,7 @@ brew "killport"
 brew "rename"
 brew "tmux"
 brew "neovim"
+brew "tree-sitter-cli"
 brew "mas"
 
 # Language and build tooling.
