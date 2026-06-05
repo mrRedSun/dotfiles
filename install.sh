@@ -9,9 +9,22 @@ SUDO_WARMED=0
 PASSWORD_CASKS=(karabiner-elements zulu@11 zulu@8)
 MAS_APP_IDS=(1503446680 1451685025)
 MAS_APP_NAMES=(PastePal WireGuard)
+ANDROID_SDK_ROOT="${ANDROID_SDK_ROOT:-$HOME/Library/Android/sdk}"
+ANDROID_SDK_PACKAGES=(
+  "cmdline-tools;latest"
+  "emulator"
+  "platform-tools"
+  "platforms;android-35"
+  "build-tools;35.0.0"
+  "system-images;android-35;google_apis_playstore;arm64-v8a"
+)
+ANDROID_AVD_NAME="Pixel_9_API_35"
+ANDROID_AVD_DEVICE="pixel_9"
+ANDROID_AVD_PACKAGE="system-images;android-35;google_apis_playstore;arm64-v8a"
 DESKTOP_APPS=(
   "AeroSpace"
   "AlDente"
+  "Android Studio"
   "Arc"
   "ChatGPT"
   "Codex"
@@ -229,6 +242,39 @@ install_dependencies() {
   "$BREW_BIN" bundle install --file "$DOTFILES_DIR/Brewfile"
 }
 
+install_android_sdk() {
+  local sdkmanager_bin
+  local avdmanager_bin
+
+  sdkmanager_bin="$(command -v sdkmanager || true)"
+  if [[ -z "$sdkmanager_bin" && -x /opt/homebrew/share/android-commandlinetools/cmdline-tools/latest/bin/sdkmanager ]]; then
+    sdkmanager_bin=/opt/homebrew/share/android-commandlinetools/cmdline-tools/latest/bin/sdkmanager
+  fi
+
+  if [[ -z "$sdkmanager_bin" ]]; then
+    say "⚠️  sdkmanager not found; skipping Android SDK package install."
+    return 0
+  fi
+
+  say "🤖 Installing Android SDK packages..."
+  mkdir -p "$ANDROID_SDK_ROOT"
+  yes | env JAVA_HOME=/opt/homebrew/opt/openjdk@17 PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH" \
+    "$sdkmanager_bin" --sdk_root="$ANDROID_SDK_ROOT" --licenses >/dev/null
+  env JAVA_HOME=/opt/homebrew/opt/openjdk@17 PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH" \
+    "$sdkmanager_bin" --sdk_root="$ANDROID_SDK_ROOT" "${ANDROID_SDK_PACKAGES[@]}"
+
+  avdmanager_bin="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager"
+  if [[ ! -x "$avdmanager_bin" ]]; then
+    avdmanager_bin="$(dirname "$sdkmanager_bin")/avdmanager"
+  fi
+  if [[ -x "$avdmanager_bin" ]] && ! env ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" JAVA_HOME=/opt/homebrew/opt/openjdk@17 PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH" \
+    "$avdmanager_bin" list avd | grep -Fq "Name: $ANDROID_AVD_NAME"; then
+    say "📱 Creating Android emulator: $ANDROID_AVD_NAME"
+    echo "no" | env ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" JAVA_HOME=/opt/homebrew/opt/openjdk@17 PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH" \
+      "$avdmanager_bin" create avd --name "$ANDROID_AVD_NAME" --package "$ANDROID_AVD_PACKAGE" --device "$ANDROID_AVD_DEVICE"
+  fi
+}
+
 link_file() {
   local source_path="$1"
   local target_path="$2"
@@ -299,6 +345,7 @@ auto_pull
 say ""
 
 install_dependencies
+install_android_sdk
 say ""
 
 say "🐚 Shell"

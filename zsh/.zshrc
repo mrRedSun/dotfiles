@@ -4,7 +4,9 @@ export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 
 export RUBY_CFLAGS="-Wno-error=implicit-function-declaration"
-if /usr/libexec/java_home -v 17 >/dev/null 2>&1; then
+if [[ -d /opt/homebrew/opt/openjdk@17 ]]; then
+    export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
+elif /usr/libexec/java_home -v 17 >/dev/null 2>&1; then
     export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 fi
 
@@ -28,8 +30,13 @@ export PATH="/usr/local/share/dotnet:$PATH" # .NET SDK
 export PATH="$HOME/.pyenv/bin:$PATH" # Pyenv binaries
 
 ## Android SDK 🤖
-export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH" # Android platform tools
-export PATH="$HOME/Library/Android/sdk/emulator:$PATH"       # Android emulator
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export ANDROID_SDK_ROOT="$ANDROID_HOME"
+export ANDROID_NDK_HOME="/opt/homebrew/share/android-ndk"
+export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"   # Android SDK command-line tools
+export PATH="$ANDROID_HOME/platform-tools:$PATH"              # Android platform tools
+export PATH="$ANDROID_HOME/emulator:$PATH"                    # Android emulator
+export PATH="/opt/homebrew/share/android-commandlinetools/cmdline-tools/latest/bin:$PATH" # Homebrew SDK tools
 
 ## Flutter and Dart 🦋🎯
 export PATH="$HOME/fvm/default/bin:$PATH" # Flutter Version Manager
