@@ -8,3 +8,6 @@
 	autoStash = true
 [include]
 	path = ~/.gitconfig.local
+[user]
+	name = mrRedSun
+	email = 22750848+mrRedSun@users.noreply.github.com

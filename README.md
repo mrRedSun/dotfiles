@@ -5,7 +5,7 @@ Personal development environment configuration and bootstrap script.
 ## What's Included
 
 - Zsh config: `zsh/.zshrc`, `zsh/.zprofile`, `zsh/.zshenv`
-- Git config: `git/.gitconfig`, `git/.gitignore`, `git/.gitignore_global`
+- Git config: `git/.gitconfig`, `git/.gitignore`
 - Neovim config: `config/nvim`
 - tmux config: `config/tmux/.tmux.conf`
 - AeroSpace config: `config/aerospace/aerospace.toml`

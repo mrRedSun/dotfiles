@@ -410,7 +410,6 @@ say ""
 say "🌿 Git"
 link_file "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 link_file "$DOTFILES_DIR/git/.gitignore" "$HOME/.gitignore"
-link_file "$DOTFILES_DIR/git/.gitignore_global" "$HOME/.gitignore_global"
 
 say ""
 say "🛠️ Tools"

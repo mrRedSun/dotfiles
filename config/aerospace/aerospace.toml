@@ -185,7 +185,6 @@ automatically-unhide-macos-hidden-apps = true
     run = ['move-node-to-workspace B']
 
 # Terminal
-
 [[on-window-detected]]
     if.app-id = 'com.apple.Terminal'
     run = ['move-node-to-workspace T']
