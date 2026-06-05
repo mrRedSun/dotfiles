@@ -255,8 +255,7 @@ link_file() {
 }
 
 configure_iterm() {
-  local prefs_dir="$DOTFILES_DIR/config/iterm2"
-  local prefs_file="$prefs_dir/com.googlecode.iterm2.plist"
+  local prefs_file="$DOTFILES_DIR/config/iterm2/com.googlecode.iterm2.plist"
   local target_path="$HOME/Library/Preferences/com.googlecode.iterm2.plist"
 
   if [[ ! -f "$prefs_file" ]]; then
@@ -273,8 +272,9 @@ configure_iterm() {
     say "📦 Backed up: $target_path -> $BACKUP_DIR/"
   fi
 
-  defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$prefs_dir"
-  defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+  defaults import com.googlecode.iterm2 "$prefs_file"
+  defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool false
+  defaults delete com.googlecode.iterm2 PrefsCustomFolder >/dev/null 2>&1 || true
   killall cfprefsd >/dev/null 2>&1 || true
 }
 
