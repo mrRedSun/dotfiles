@@ -8,3 +8,6 @@
 	autoStash = true
 [include]
 	path = ~/.gitconfig.local
+[user]
+	name = Roman Hryshchyshyn
+	email = roman.hryshchyshyn@gmail.com
