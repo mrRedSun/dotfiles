@@ -43,7 +43,11 @@ brew "xcodes"
 cask "xcodes-app"
 
 # Mobile, embedded, and device tooling.
+cask "android-commandlinetools"
+cask "android-ndk"
 cask "android-platform-tools"
+cask "android-studio"
+brew "gradle"
 brew "scrcpy"
 brew "minicom"
 
