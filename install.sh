@@ -1,14 +1,38 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Bootstrap this Mac from the dotfiles repo.
+#
+# High-level flow:
+#   1. Pull the latest repo changes when it is safe to do so.
+#   2. Install Homebrew and every Brewfile dependency.
+#   3. Install Android SDK packages and create a ready-to-run emulator.
+#   4. Install Oh My Zsh and link repo-managed dotfiles into $HOME.
+#   5. Import app preferences that cannot safely be symlinked.
+#   6. Apply macOS defaults from scripts/macos.sh.
+#   7. Launch desktop apps once so first-run prompts surface immediately.
+#
+# The script is intended to be idempotent. Existing files that would be
+# replaced by symlinks are moved into ~/.dotfiles-backup/<timestamp>/.
+# Some package installers require sudo or Mac App Store auth, so run this from
+# an interactive terminal on a fresh machine.
+
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 BREW_BIN=""
 SUDO_KEEPALIVE_PID=""
 SUDO_WARMED=0
+
+# Casks in this list use pkg installers or system extensions. They are handled
+# before the main Brewfile pass so password prompts are grouped together.
 PASSWORD_CASKS=(karabiner-elements zulu@11 zulu@8)
+
+# Mac App Store apps managed by mas. Keep IDs and names aligned by index.
 MAS_APP_IDS=(1503446680 1451685025)
 MAS_APP_NAMES=(PastePal WireGuard)
+
+# Android SDK packages installed after android-commandlinetools is available.
+# Homebrew installs the SDK manager; sdkmanager installs the emulator payloads.
 ANDROID_SDK_ROOT="${ANDROID_SDK_ROOT:-$HOME/Library/Android/sdk}"
 ANDROID_SDK_PACKAGES=(
   "cmdline-tools;latest"
@@ -21,6 +45,9 @@ ANDROID_SDK_PACKAGES=(
 ANDROID_AVD_NAME="Pixel_9_API_35"
 ANDROID_AVD_DEVICE="pixel_9"
 ANDROID_AVD_PACKAGE="system-images;android-35;google_apis_playstore;arm64-v8a"
+
+# GUI apps to open after setup. This helps macOS show any first-run permission,
+# login, or background-item prompts while setup is still fresh in memory.
 DESKTOP_APPS=(
   "AeroSpace"
   "AlDente"
@@ -58,6 +85,8 @@ cleanup() {
 
 trap cleanup EXIT
 
+# Pull only when the working tree is clean. Local edits are treated as user
+# work and are never overwritten by the installer.
 auto_pull() {
   if ! git -C "$DOTFILES_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     say "ℹ️  Not a Git repo, skipping auto-pull."
@@ -78,6 +107,9 @@ auto_pull() {
   git -C "$DOTFILES_DIR" pull --ff-only
 }
 
+# Oh My Zsh's official installer is interactive, so this clones the framework
+# directly. If ~/.oh-my-zsh partially exists, merge the framework into it while
+# preserving any existing custom plugins.
 install_oh_my_zsh() {
   if [[ -f "$HOME/.oh-my-zsh/oh-my-zsh.sh" ]]; then
     say "✅ Oh My Zsh already installed."
@@ -98,6 +130,8 @@ install_oh_my_zsh() {
   git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
 }
 
+# Homebrew may not be in PATH yet on a fresh Apple Silicon install. Check the
+# canonical install locations before deciding it needs to be installed.
 find_brew() {
   if command -v brew >/dev/null 2>&1; then
     command -v brew
@@ -117,6 +151,7 @@ find_brew() {
   return 1
 }
 
+# Ensure Homebrew exists and update this process PATH using brew shellenv.
 install_homebrew() {
   if BREW_BIN="$(find_brew)"; then
     say "✅ Homebrew already installed."
@@ -146,6 +181,8 @@ install_mas_cli() {
   "$BREW_BIN" install mas
 }
 
+# Homebrew can record pkg casks as installed even when the privileged pkg
+# payload did not finish. Karabiner is checked by its real installed artifact.
 needs_password_cask_install() {
   local cask="$1"
 
@@ -159,6 +196,8 @@ needs_password_cask_install() {
   esac
 }
 
+# Ask for sudo once and keep the ticket warm while long downloads/installers run.
+# Non-interactive runs fail early so they do not half-install privileged casks.
 warm_sudo() {
   if [[ "$SUDO_WARMED" -eq 1 ]]; then
     return 0
@@ -181,6 +220,8 @@ warm_sudo() {
   SUDO_KEEPALIVE_PID="$!"
 }
 
+# Install the small set of dependencies known to ask for passwords before the
+# main Brewfile pass. This keeps prompts close together and makes repeats clean.
 install_password_dependencies() {
   local missing_casks=()
   local missing_mas_ids=()
@@ -227,6 +268,8 @@ install_password_dependencies() {
   fi
 }
 
+# Install every Brewfile item. The password-gated pass runs first because
+# brew bundle check alone is not enough for pkg casks like Karabiner.
 install_dependencies() {
   say "🍺 Homebrew"
   install_homebrew
@@ -242,6 +285,8 @@ install_dependencies() {
   "$BREW_BIN" bundle install --file "$DOTFILES_DIR/Brewfile"
 }
 
+# Install SDK packages that Homebrew does not manage directly, accept Android
+# SDK licenses, and create a default Apple-Silicon-friendly Pixel emulator.
 install_android_sdk() {
   local sdkmanager_bin
   local avdmanager_bin
@@ -275,6 +320,8 @@ install_android_sdk() {
   fi
 }
 
+# Symlink a repo file/directory into place. Existing user files are backed up
+# instead of overwritten.
 link_file() {
   local source_path="$1"
   local target_path="$2"
@@ -300,6 +347,9 @@ link_file() {
   say "🔗 Linked: $target_path -> $source_path"
 }
 
+# iTerm does not reliably load a symlinked preference plist and its custom
+# preferences-folder mode can overwrite the repo export. Import the repo plist
+# into the normal macOS preferences domain instead.
 configure_iterm() {
   local prefs_file="$DOTFILES_DIR/config/iterm2/com.googlecode.iterm2.plist"
   local target_path="$HOME/Library/Preferences/com.googlecode.iterm2.plist"
@@ -324,6 +374,8 @@ configure_iterm() {
   killall cfprefsd >/dev/null 2>&1 || true
 }
 
+# Open GUI apps without stealing focus. Failures are reported but do not stop
+# setup, because some apps may require post-install approval before they launch.
 launch_desktop_apps() {
   local app
 
