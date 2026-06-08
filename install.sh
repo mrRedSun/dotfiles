@@ -45,6 +45,7 @@ ANDROID_SDK_PACKAGES=(
 ANDROID_AVD_NAME="Pixel_9_API_35"
 ANDROID_AVD_DEVICE="pixel_9"
 ANDROID_AVD_PACKAGE="system-images;android-35;google_apis_playstore;arm64-v8a"
+ANDROID_AVD_CONFIG="$HOME/.android/avd/$ANDROID_AVD_NAME.avd/config.ini"
 
 # GUI apps to open after setup. This helps macOS show any first-run permission,
 # login, or background-item prompts while setup is still fresh in memory.
@@ -317,6 +318,15 @@ install_android_sdk() {
     say "📱 Creating Android emulator: $ANDROID_AVD_NAME"
     echo "no" | env ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" JAVA_HOME=/opt/homebrew/opt/openjdk@17 PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH" \
       "$avdmanager_bin" create avd --name "$ANDROID_AVD_NAME" --package "$ANDROID_AVD_PACKAGE" --device "$ANDROID_AVD_DEVICE"
+  fi
+
+  if [[ -f "$ANDROID_AVD_CONFIG" ]]; then
+    say "⌨️  Enabling hardware keyboard for Android emulator..."
+    if grep -q '^hw.keyboard=' "$ANDROID_AVD_CONFIG"; then
+      sed -i '' 's/^hw.keyboard=.*/hw.keyboard=yes/' "$ANDROID_AVD_CONFIG"
+    else
+      printf '%s\n' 'hw.keyboard=yes' >>"$ANDROID_AVD_CONFIG"
+    fi
   fi
 }
 
