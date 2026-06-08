@@ -8,7 +8,7 @@ set -euo pipefail
 #   2. Install Homebrew and every Brewfile dependency.
 #   3. Install Android SDK packages and create a ready-to-run emulator.
 #   4. Install Oh My Zsh and link repo-managed dotfiles into $HOME.
-#   5. Import app preferences that cannot safely be symlinked.
+#   5. Restore app preferences with Mackup copy mode.
 #   6. Apply macOS defaults from scripts/macos.sh.
 #   7. Launch desktop apps once so first-run prompts surface immediately.
 #
@@ -347,28 +347,24 @@ link_file() {
   say "🔗 Linked: $target_path -> $source_path"
 }
 
-# iTerm does not reliably load a symlinked preference plist and its custom
-# preferences-folder mode can overwrite the repo export. Import the repo plist
-# into the normal macOS preferences domain instead.
-configure_iterm() {
-  local prefs_file="$DOTFILES_DIR/config/iterm2/com.googlecode.iterm2.plist"
-  local target_path="$HOME/Library/Preferences/com.googlecode.iterm2.plist"
+# Restore app plist/config files that Mackup knows how to manage. This uses
+# Mackup copy mode, not link mode; Mackup warns that symlinked preferences are
+# broken on modern macOS.
+restore_mackup_configs() {
+  local mackup_config="$DOTFILES_DIR/config/mackup.cfg"
 
-  if [[ ! -f "$prefs_file" ]]; then
-    say "⚠️  Missing iTerm preferences: $prefs_file"
+  if ! command -v mackup >/dev/null 2>&1; then
+    say "⚠️  Mackup not found; skipping app preference restore."
     return 0
   fi
 
-  say "🖥️  Applying iTerm preferences..."
-  if [[ -L "$target_path" ]] && [[ "$(readlink "$target_path")" == "$prefs_file" ]]; then
-    rm "$target_path"
-  elif [[ -e "$target_path" && ! -L "$target_path" ]]; then
-    mkdir -p "$BACKUP_DIR"
-    mv "$target_path" "$BACKUP_DIR/"
-    say "📦 Backed up: $target_path -> $BACKUP_DIR/"
+  if [[ ! -f "$mackup_config" ]]; then
+    say "⚠️  Missing Mackup config: $mackup_config"
+    return 0
   fi
 
-  defaults import com.googlecode.iterm2 "$prefs_file"
+  say "📦 Restoring app preferences with Mackup..."
+  mackup --config-file "$mackup_config" restore --force
   defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool false
   defaults delete com.googlecode.iterm2 PrefsCustomFolder >/dev/null 2>&1 || true
   killall cfprefsd >/dev/null 2>&1 || true
@@ -417,7 +413,8 @@ link_file "$DOTFILES_DIR/config/nvim" "$HOME/.config/nvim"
 link_file "$DOTFILES_DIR/config/tmux/.tmux.conf" "$HOME/.config/tmux/.tmux.conf"
 link_file "$DOTFILES_DIR/config/aerospace/aerospace.toml" "$HOME/.aerospace.toml"
 link_file "$DOTFILES_DIR/config/karabiner" "$HOME/.config/karabiner"
-configure_iterm
+link_file "$DOTFILES_DIR/config/mackup.cfg" "$HOME/.mackup.cfg"
+restore_mackup_configs
 
 say ""
 "$DOTFILES_DIR/scripts/macos.sh"
