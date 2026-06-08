@@ -100,6 +100,7 @@ cask "ticktick"
 
 # Fonts and runtimes.
 cask "font-fira-code"
+cask "font-fira-code-nerd-font"
 cask "font-hack-nerd-font"
 cask "zulu@11"
 cask "zulu@8"
