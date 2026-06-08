@@ -10,7 +10,7 @@ Personal development environment configuration and bootstrap script.
 - tmux config: `config/tmux/.tmux.conf`
 - AeroSpace config: `config/aerospace/aerospace.toml`
 - Karabiner-Elements config: `config/karabiner`
-- iTerm2 preferences: `config/iterm2/com.googlecode.iterm2.plist`
+- Mackup app preferences: `config/mackup.cfg`, `config/mackup`
 - Rectangle Pro export: `config/rectangle-pro/RectangleProConfig.json`
 - macOS tweaks: `scripts/macos.sh`
 - Homebrew package list: `Brewfile`
@@ -30,7 +30,7 @@ From this repo:
 ./install.sh
 ```
 
-The installer installs Homebrew if needed, installs the selected Brewfile packages, creates symlinks from this repo into your home directory, and applies macOS tweaks. If a target file already exists and is not already the expected symlink, it is moved into `~/.dotfiles-backup/<timestamp>/` before the new link is created.
+The installer installs Homebrew if needed, installs the selected Brewfile packages, creates symlinks from this repo into your home directory, restores supported app preferences with Mackup copy mode, and applies macOS tweaks. If a target file already exists and is not already the expected symlink, it is moved into `~/.dotfiles-backup/<timestamp>/` before the new link is created.
 
 Run the installer from an interactive terminal. Some Homebrew casks and Mac App Store installs need admin rights; the installer asks for your password once up front and keeps that sudo session alive until it finishes.
 
@@ -41,6 +41,18 @@ It also applies a few macOS defaults: disables press-and-hold accent picking for
 ## Homebrew
 
 The `Brewfile` is installed by `./install.sh` and is intentionally curated from the current machine. It does not include every installed transitive library, generated package, VS Code extension, or one-off app.
+
+## Mackup
+
+App preference files that are awkward to symlink or import manually are restored with Mackup. The repo uses a narrow Mackup config at `config/mackup.cfg`, currently scoped to iTerm2 only, with storage under `config/mackup`.
+
+The installer links `~/.mackup.cfg` and runs:
+
+```sh
+mackup --config-file config/mackup.cfg restore --force
+```
+
+Use Mackup copy/restore mode for macOS app preferences. Do not use Mackup link mode on modern macOS.
 
 ## Manual Imports
 
