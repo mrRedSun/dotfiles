@@ -131,6 +131,28 @@ install_oh_my_zsh() {
   git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
 }
 
+# Clone the custom plugins referenced by .zshrc into the Oh My Zsh custom
+# directory. Each plugin is skipped when its checkout already exists.
+install_omz_custom_plugins() {
+  local plugin_dir="$HOME/.oh-my-zsh/custom/plugins"
+
+  install_custom_plugin() {
+    local name="$1"
+    local repo="$2"
+
+    if [[ -d "$plugin_dir/$name" ]]; then
+      return 0
+    fi
+
+    say "🔌 Installing Oh My Zsh plugin: $name"
+    git clone --depth 1 "$repo" "$plugin_dir/$name"
+  }
+
+  install_custom_plugin zsh-vi-mode https://github.com/jeffreytse/zsh-vi-mode.git
+  install_custom_plugin zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions.git
+  install_custom_plugin zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting.git
+}
+
 # Homebrew may not be in PATH yet on a fresh Apple Silicon install. Check the
 # canonical install locations before deciding it needs to be installed.
 find_brew() {
@@ -408,6 +430,7 @@ say ""
 
 say "🐚 Shell"
 install_oh_my_zsh
+install_omz_custom_plugins
 link_file "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 link_file "$DOTFILES_DIR/zsh/.zprofile" "$HOME/.zprofile"
 link_file "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv"

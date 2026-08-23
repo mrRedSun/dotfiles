@@ -8,19 +8,17 @@ plugins=(
     git
     zsh-vi-mode
     zsh-autosuggestions
-    zsh-syntax-highlighting
     sudo
     fzf
     flutter
+    # Keep last: syntax highlighting must wrap all other plugins/widgets.
+    zsh-syntax-highlighting
 )
 
 [[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
 
 ## zsh-autosuggestions configuration
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-
-# Add zsh-syntax-highlighting at the end of the source list for proper loading
-[[ -f "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 # 🔗 Aliases
 

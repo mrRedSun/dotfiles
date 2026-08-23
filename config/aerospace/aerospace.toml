@@ -1,8 +1,4 @@
-after-login-command = []
-
-exec-on-workspace-change = ['/bin/bash', '-c',]
-
-after-startup-command = []
+config-version = 2
 
 # Start AeroSpace at login
 start-at-login = true
@@ -27,11 +23,11 @@ automatically-unhide-macos-hidden-apps = true
 
 [gaps]
     inner.horizontal = 8
-    inner.vertical =   5 
-    outer.left =       0
-    outer.bottom =     0
-    outer.top =        0
-    outer.right =      0
+    inner.vertical = 5
+    outer.left = 0
+    outer.bottom = 0
+    outer.top = 0
+    outer.right = 0
 
 [mode.main.binding]
     alt-slash = 'layout tiles horizontal vertical'
@@ -59,7 +55,7 @@ automatically-unhide-macos-hidden-apps = true
     alt-7 = 'workspace 7'
     alt-8 = 'workspace 8'
     alt-9 = 'workspace 9'
-    alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
+    alt-a = 'workspace A'
     alt-b = 'workspace B'
     alt-c = 'workspace C'
     alt-d = 'workspace D'
@@ -122,7 +118,7 @@ automatically-unhide-macos-hidden-apps = true
     alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-    alt-s= 'mode service'
+    alt-s = 'mode service'
     alt-shift-f = 'layout floating tiling'
     alt-f = 'fullscreen'
 
@@ -142,7 +138,6 @@ automatically-unhide-macos-hidden-apps = true
     alt-s = ['exec-and-forget ~/.redscripts/devstartup', 'mode main']
     alt-d = ['enable off']
 
-
     alt-e = ['layout tiling', 'exec-and-forget ~/.redscripts/launch_scrcpy.sh', 'mode main']
     alt-a = ['exec-and-forget ~/.redscripts/launch_avd.sh', 'mode main']
 
@@ -154,21 +149,22 @@ automatically-unhide-macos-hidden-apps = true
     alt-shift-k = ['join-with up']
     alt-shift-l = ['join-with right']
 
-## Application workspace assignments
+# Application workspace assignments
 # Each application will be moved to a specific workspace
 
-# W - browser
-# P - credentials app
-# C - work communications (Discord, Teams, Slack)
-# O - outlook
-# E - IDE
+# 3 - Git client
+# A - Slack
+# B - Telegram
+# C - work communications (Discord and Teams)
+# E - IDEs
 # G - gaming
-# R - remote desktop
-# T - telegram
-# T - terminal
-# J - Jit (Git but G was taken)
-# A - slack
+# I - AI tools
 # M - music
+# N - notes and tasks
+# O - Outlook
+# R - remote desktop
+# T - terminals and ChatGPT Classic
+# W - browser
 
 [[on-window-detected]]
     if.window-title-regex-substring = '\d Reminder(s)?'
@@ -197,6 +193,8 @@ automatically-unhide-macos-hidden-apps = true
 [[on-window-detected]]
     if.app-id = 'net.kovidgoyal.kitty'
     run = ['move-node-to-workspace T']
+
+# Keep WezTerm windows in their current workspace and default layout.
 [[on-window-detected]]
     if.app-name-regex-substring = 'wezterm-gui'
     run = []
@@ -217,7 +215,6 @@ automatically-unhide-macos-hidden-apps = true
     if.app-id = 'com.hnc.Discord'
     run = ['move-node-to-workspace C']
 
-
 # Slack
 [[on-window-detected]]
     if.app-id = 'com.tinyspeck.slackmacgap'
@@ -231,6 +228,11 @@ automatically-unhide-macos-hidden-apps = true
 [[on-window-detected]]
     if.app-id = 'com.microsoft.VSCode'
     run = ['move-node-to-workspace E']
+
+# Git client
+[[on-window-detected]]
+    if.app-id = 'com.DanPristupov.Fork'
+    run = ['move-node-to-workspace 3']
 
 # Email
 [[on-window-detected]]
@@ -247,6 +249,9 @@ automatically-unhide-macos-hidden-apps = true
     run = ['move-node-to-workspace I']
 [[on-window-detected]]
     if.app-id = 'com.openai.codex'
+    run = ['move-node-to-workspace I']
+[[on-window-detected]]
+    if.app-id = 'com.t3tools.t3code'
     run = ['move-node-to-workspace I']
 
 # Notes
@@ -267,6 +272,7 @@ automatically-unhide-macos-hidden-apps = true
 [[on-window-detected]]
     if.app-id = 'com.megacrit.SlayTheSpire2'
     run = ['move-node-to-workspace G']
+
 # Remote Desktop
 [[on-window-detected]]
     if.app-id = 'com.microsoft.rdc.macos'
@@ -280,20 +286,15 @@ automatically-unhide-macos-hidden-apps = true
     if.app-id = 'com.github.th-ch.youtube-music'
     run = ['move-node-to-workspace M']
 
+# Float windows that did not match an earlier rule. Keep this callback last.
 [[on-window-detected]]
-    if.app-id = 'com.DanPristupov.Fork'
-    run = ['move-node-to-workspace 3']
-
-
-# Float all windows by default
-[[on-window-detected]]
-    check-further-callbacks = true
+    if = 'true'
     run = 'layout floating'
 
 [workspace-to-monitor-force-assignment]
     C = 1
     M = 1
-    O = 1   
+    O = 1
     W = '^built-in retina display$'
     2 = '^built-in retina display$'
     B = '^built-in retina display$'
