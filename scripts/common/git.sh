@@ -12,4 +12,9 @@ say "🌿 Git"
 link_file "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 link_file "$DOTFILES_DIR/git/.gitignore" "$HOME/.gitignore"
 
+if [[ ! -e "$HOME/.gitconfig.local" ]]; then
+  touch "$HOME/.gitconfig.local"
+  say "📝 Created ~/.gitconfig.local for machine-local overrides."
+fi
+
 say "✅ Git configured."
