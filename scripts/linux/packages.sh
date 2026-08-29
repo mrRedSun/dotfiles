@@ -122,11 +122,12 @@ if [[ "${#missing_optional[@]}" -gt 0 ]]; then
 fi
 
 # The repo is zsh-centric; make zsh the login shell so ~/.zprofile applies.
-login_shell="$(getent passwd "$USER" | cut -d: -f7)"
+user_name="$(id -un)"
+login_shell="$(getent passwd "$user_name" | cut -d: -f7)"
 if [[ "$login_shell" != "*/zsh" ]]; then
   warm_sudo
-  say "🐚 Setting zsh as the login shell for $USER..."
-  sudo usermod -s "$(command -v zsh)" "$USER"
+  say "🐚 Setting zsh as the login shell for $user_name..."
+  sudo usermod -s "$(command -v zsh)" "$user_name"
 fi
 
 say "✅ apt packages installed."
