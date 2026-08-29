@@ -121,4 +121,12 @@ if [[ "${#missing_optional[@]}" -gt 0 ]]; then
   install_apt_packages "${missing_optional[@]}"
 fi
 
+# The repo is zsh-centric; make zsh the login shell so ~/.zprofile applies.
+login_shell="$(getent passwd "$USER" | cut -d: -f7)"
+if [[ "$login_shell" != "*/zsh" ]]; then
+  warm_sudo
+  say "🐚 Setting zsh as the login shell for $USER..."
+  sudo usermod -s "$(command -v zsh)" "$USER"
+fi
+
 say "✅ apt packages installed."

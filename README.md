@@ -35,7 +35,7 @@ The installer detects the OS with `uname` and runs install modules in order. Eac
 
 If a target file already exists and is not already the expected symlink, it is moved into `~/.dotfiles-backup/<timestamp>/` before the new link is created.
 
-Run the installer from an interactive terminal. Package modules need admin rights; the installer asks for your password once and keeps that sudo session alive until it finishes.
+Run the installer from an interactive terminal. Package modules need admin rights; each one asks for your password when needed and keeps the sudo session alive while it runs.
 
 The installer is safe to run repeatedly. If this directory is a Git checkout with an upstream branch and no local changes, it pulls the latest dotfiles with `git pull --ff-only` before linking. If local changes are present, it skips the pull and keeps going.
 

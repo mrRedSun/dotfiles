@@ -101,4 +101,8 @@ for module in "${MODULES[@]}"; do
   say ""
 done
 
-say "👑 Dotfiles installed."
+if [[ -n "${DOTFILES_DRY_RUN:-}" ]]; then
+  say "👑 Dotfiles install planned (dry run)."
+else
+  say "👑 Dotfiles installed."
+fi

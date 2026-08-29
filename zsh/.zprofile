@@ -18,33 +18,12 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     export ANDROID_SDK_ROOT="$ANDROID_HOME"
     export ANDROID_NDK_HOME="/opt/homebrew/share/android-ndk"
 else
-    if [[ -d "$HOME/Android/Sdk" ]]; then
-        export ANDROID_HOME="$HOME/Android/Sdk"
-        export ANDROID_SDK_ROOT="$ANDROID_HOME"
-    fi
+    export ANDROID_HOME="$HOME/Android/Sdk"
+    export ANDROID_SDK_ROOT="$ANDROID_HOME"
 fi
 
-# Path modifications
-export PATH="$HOME/.redscripts:$PATH"
-export PATH="/usr/local/bin:$PATH"
-export PATH="$HOME/.pyenv/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-
-if [[ -n "${ANDROID_HOME:-}" ]]; then
-    export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
-    export PATH="$ANDROID_HOME/platform-tools:$PATH"
-    export PATH="$ANDROID_HOME/emulator:$PATH"
-fi
-
-export PATH="$HOME/fvm/default/bin:$PATH"
-export PATH="$HOME/.pub-cache/bin:$PATH"
-export PATH="$HOME/.codeium/windsurf/bin:$PATH"
-
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
-export PATH="$PATH:$HOME/go/bin"
-
+# macOS-only paths first so shared paths keep out-ranking Homebrew, matching
+# the original macOS-only profile.
 if [[ "$(uname -s)" == "Darwin" ]]; then
     export PATH="/opt/homebrew/bin:$PATH"
     export PATH="/opt/homebrew/sbin:$PATH"
@@ -58,7 +37,28 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     export PATH="$HOME/Applications/Qt/6.6.3/macos/bin:$PATH"
     export PATH="/Applications/Android Studio.app/Contents/MacOS:$PATH"
     export PATH="/Library/Frameworks/GStreamer.framework/Commands:$PATH"
+fi
 
+# Cross-platform paths.
+export PATH="$HOME/.redscripts:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="$HOME/.pyenv/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+export PATH="$ANDROID_HOME/platform-tools:$PATH"
+export PATH="$ANDROID_HOME/emulator:$PATH"
+
+export PATH="$HOME/fvm/default/bin:$PATH"
+export PATH="$HOME/.pub-cache/bin:$PATH"
+export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+export PATH="$PATH:$HOME/go/bin"
+
+if [[ "$(uname -s)" == "Darwin" ]]; then
     export PKG_CONFIG_PATH="/opt/homebrew/opt/curl/lib/pkgconfig:$PKG_CONFIG_PATH"
     export PKG_CONFIG_PATH="/opt/homebrew/opt/expat/lib/pkgconfig:$PKG_CONFIG_PATH"
     export PKG_CONFIG_PATH="/Library/Frameworks/GStreamer.framework/Versions/1.0/lib/pkgconfig:$PKG_CONFIG_PATH"
