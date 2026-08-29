@@ -60,3 +60,4 @@ export ZSH="$HOME/.oh-my-zsh"
 export CASE_SENSITIVE="false"
 export Qt5_DIR="/opt/homebrew/opt/qt@5/lib/cmake/Qt5"
 export NVM_DIR="$HOME/.nvm"
+

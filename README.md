@@ -12,6 +12,7 @@ Personal development environment configuration and bootstrap script.
 - Karabiner-Elements config: `config/karabiner`
 - Mackup app preferences: `config/mackup.cfg`, `config/mackup`
 - Rectangle Pro export: `config/rectangle-pro/RectangleProConfig.json`
+- Personal AI skills: `skills/`
 - macOS tweaks: `scripts/macos.sh`
 - Homebrew package list: `Brewfile`
 - Install script: `install.sh`
@@ -30,7 +31,7 @@ From this repo:
 ./install.sh
 ```
 
-The installer installs Homebrew if needed, installs the selected Brewfile packages, installs Oh My Zsh and its custom plugins (`zsh-vi-mode`, `zsh-autosuggestions`, `zsh-syntax-highlighting`) into `~/.oh-my-zsh/custom/plugins`, creates symlinks from this repo into your home directory, restores supported app preferences with Mackup copy mode, and applies macOS tweaks. If a target file already exists and is not already the expected symlink, it is moved into `~/.dotfiles-backup/<timestamp>/` before the new link is created.
+The installer installs Homebrew if needed, installs missing Brewfile packages without upgrading already-installed dependencies, installs Oh My Zsh and its custom plugins (`zsh-vi-mode`, `zsh-autosuggestions`, `zsh-syntax-highlighting`) into `~/.oh-my-zsh/custom/plugins`, creates symlinks from this repo into your home directory, links personal AI skills for Claude Code, Codex, and OpenCode, restores supported app preferences with Mackup copy mode, and applies macOS tweaks. If a target file already exists and is not already the expected symlink, it is moved into `~/.dotfiles-backup/<timestamp>/` before the new link is created.
 
 Run the installer from an interactive terminal. Some Homebrew casks and Mac App Store installs need admin rights; the installer asks for your password once up front and keeps that sudo session alive until it finishes.
 
@@ -53,6 +54,21 @@ mackup --config-file config/mackup.cfg restore --force
 ```
 
 Use Mackup copy/restore mode for macOS app preferences. Do not use Mackup link mode on modern macOS.
+
+## AI Skills
+
+Personal agent skills live in `skills/<skill-name>/SKILL.md`. See [SKILLS.md](SKILLS.md) for a short, practical catalog. The installer links each skill directory individually so existing unmanaged skills can remain alongside the repo-managed set:
+
+- `~/.claude/skills/<skill-name>` for Claude Code
+- `~/.agents/skills/<skill-name>` for Codex and OpenCode
+
+Codex and OpenCode both discover the open-standard `~/.agents/skills` location. Using that shared location avoids duplicate skill definitions in OpenCode. Run only the skill-linking step with:
+
+```sh
+./scripts/link-ai-skills.sh
+```
+
+Existing destinations that are not already the expected symlink are moved into `~/.dotfiles-backup/<timestamp>/ai-skills/` first.
 
 ## Manual Imports
 

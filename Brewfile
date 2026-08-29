@@ -1,7 +1,8 @@
-# Core taps used by selected packages.
+# Package taps used by selected dependencies.
 tap "leoafarias/fvm"
 tap "nikitabobko/tap"
 tap "pear-devs/pear"
+tap "xcodesorg/made"
 
 # Core CLI utilities.
 brew "git"
@@ -40,7 +41,7 @@ brew "rbenv"
 brew "openjdk@17"
 brew "openjdk@21"
 brew "leoafarias/fvm/fvm"
-brew "xcodes"
+brew "xcodesorg/made/xcodes"
 cask "xcodes-app"
 
 # Mobile, embedded, and device tooling.

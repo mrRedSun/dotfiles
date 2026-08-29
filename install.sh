@@ -7,7 +7,7 @@ set -euo pipefail
 #   1. Pull the latest repo changes when it is safe to do so.
 #   2. Install Homebrew and every Brewfile dependency.
 #   3. Install Android SDK packages and create a ready-to-run emulator.
-#   4. Install Oh My Zsh and link repo-managed dotfiles into $HOME.
+#   4. Install Oh My Zsh and link repo-managed dotfiles and AI skills.
 #   5. Restore app preferences with Mackup copy mode.
 #   6. Apply macOS defaults from scripts/macos.sh.
 #   7. Launch desktop apps once so first-run prompts surface immediately.
@@ -299,13 +299,16 @@ install_dependencies() {
 
   install_password_dependencies
 
-  if "$BREW_BIN" bundle check --file "$DOTFILES_DIR/Brewfile"; then
+  # A routine dotfiles sync should install missing dependencies, not upgrade
+  # every outdated package on the machine. Keep upgrades as an explicit
+  # Homebrew maintenance action.
+  if HOMEBREW_BUNDLE_NO_UPGRADE=1 "$BREW_BIN" bundle check --file "$DOTFILES_DIR/Brewfile"; then
     say "✅ Brewfile dependencies already installed."
     return 0
   fi
 
   say "📦 Installing Brewfile dependencies..."
-  "$BREW_BIN" bundle install --file "$DOTFILES_DIR/Brewfile"
+  HOMEBREW_BUNDLE_NO_UPGRADE=1 "$BREW_BIN" bundle install --file "$DOTFILES_DIR/Brewfile"
 }
 
 # Install SDK packages that Homebrew does not manage directly, accept Android
@@ -448,6 +451,10 @@ link_file "$DOTFILES_DIR/config/aerospace/aerospace.toml" "$HOME/.aerospace.toml
 link_file "$DOTFILES_DIR/config/karabiner" "$HOME/.config/karabiner"
 link_file "$DOTFILES_DIR/config/mackup.cfg" "$HOME/.mackup.cfg"
 restore_mackup_configs
+
+say ""
+say "🧠 AI skills"
+DOTFILES_BACKUP_DIR="$BACKUP_DIR" "$DOTFILES_DIR/scripts/link-ai-skills.sh"
 
 say ""
 "$DOTFILES_DIR/scripts/macos.sh"
