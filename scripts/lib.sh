@@ -60,7 +60,9 @@ warm_sudo() {
   fi
 
   sudo -k
-  if sudo -n -v 2>/dev/null; then
+  # `sudo -n -v` still demands a password under NOPASSWD; probe with a real
+  # command instead.
+  if sudo -n true 2>/dev/null; then
     SUDO_WARMED=1
     return 0
   fi
