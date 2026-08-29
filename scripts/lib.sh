@@ -51,9 +51,17 @@ link_file() {
 }
 
 # Ask for sudo once and keep the ticket warm while long downloads/installers
-# run. Non-interactive runs fail early so they do not half-install packages.
+# run. Passwordless sudo (CI, containers, cloud images) is detected first;
+# non-interactive runs without it fail early so they do not half-install
+# packages.
 warm_sudo() {
   if [[ "$SUDO_WARMED" -eq 1 ]]; then
+    return 0
+  fi
+
+  sudo -k
+  if sudo -n -v 2>/dev/null; then
+    SUDO_WARMED=1
     return 0
   fi
 
@@ -62,7 +70,6 @@ warm_sudo() {
     return 1
   else
     say "🔐 Refreshing sudo credentials for package installers..."
-    sudo -k
     sudo -v
     SUDO_WARMED=1
   fi
