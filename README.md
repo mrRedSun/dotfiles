@@ -1,6 +1,6 @@
 # Dotfiles
 
-Personal development environment configuration and bootstrap script.
+Personal development environment configuration and bootstrap script for macOS and Linux.
 
 ## What's Included
 
@@ -8,18 +8,18 @@ Personal development environment configuration and bootstrap script.
 - Git config: `git/.gitconfig`, `git/.gitignore`
 - Neovim config: `config/nvim`
 - tmux config: `config/tmux/.tmux.conf`
-- AeroSpace config: `config/aerospace/aerospace.toml`
-- Karabiner-Elements config: `config/karabiner`
-- Mackup app preferences: `config/mackup.cfg`, `config/mackup`
-- Rectangle Pro export: `config/rectangle-pro/RectangleProConfig.json`
+- AeroSpace config: `config/aerospace/aerospace.toml` (macOS)
+- Karabiner-Elements config: `config/karabiner` (macOS)
+- Mackup app preferences: `config/mackup.cfg`, `config/mackup` (macOS)
+- Rectangle Pro export: `config/rectangle-pro/RectangleProConfig.json` (macOS)
 - Personal AI skills: `skills/`
-- macOS tweaks: `scripts/macos.sh`
-- Homebrew package list: `Brewfile`
+- Install modules: `scripts/common/`, `scripts/macos/`, `scripts/linux/`
+- Homebrew package list (macOS): `Brewfile`
 - Install script: `install.sh`
 
 ## Install
 
-On a new Mac, clone the repo and run the installer:
+On a new machine, clone the repo and run the installer:
 
 ```sh
 mkdir -p ~/Projects && git clone https://github.com/mrRedSun/dotfiles.git ~/Projects/dotfiles && cd ~/Projects/dotfiles && ./install.sh
@@ -31,17 +31,27 @@ From this repo:
 ./install.sh
 ```
 
-The installer installs Homebrew if needed, installs missing Brewfile packages without upgrading already-installed dependencies, installs Oh My Zsh and its custom plugins (`zsh-vi-mode`, `zsh-autosuggestions`, `zsh-syntax-highlighting`) into `~/.oh-my-zsh/custom/plugins`, creates symlinks from this repo into your home directory, links personal AI skills for Claude Code, Codex, and OpenCode, restores supported app preferences with Mackup copy mode, and applies macOS tweaks. If a target file already exists and is not already the expected symlink, it is moved into `~/.dotfiles-backup/<timestamp>/` before the new link is created.
+The installer detects the OS with `uname` and runs install modules in order. Each module prefers `scripts/<os>/<module>.sh` and falls back to `scripts/common/<module>.sh` when a shared version exists; modules without a variant for the current OS are skipped. On macOS this means Homebrew and the Brewfile, the Android SDK and a Pixel emulator, Oh My Zsh and its custom plugins (`zsh-vi-mode`, `zsh-autosuggestions`, `zsh-syntax-highlighting`), symlinks from this repo into your home directory, personal AI skills for Claude Code, Codex, and OpenCode, a Mackup restore, macOS `defaults` tweaks, and a first launch of desktop apps. On Linux it installs the equivalent apt packages, the Android SDK command-line tools with an x86_64 emulator, and the same shared shell/git/tool/skills links, plus a few GNOME tweaks.
 
-Run the installer from an interactive terminal. Some Homebrew casks and Mac App Store installs need admin rights; the installer asks for your password once up front and keeps that sudo session alive until it finishes.
+If a target file already exists and is not already the expected symlink, it is moved into `~/.dotfiles-backup/<timestamp>/` before the new link is created.
+
+Run the installer from an interactive terminal. Package modules need admin rights; the installer asks for your password once and keeps that sudo session alive until it finishes.
 
 The installer is safe to run repeatedly. If this directory is a Git checkout with an upstream branch and no local changes, it pulls the latest dotfiles with `git pull --ff-only` before linking. If local changes are present, it skips the pull and keeps going.
 
-It also applies a few macOS defaults: disables press-and-hold accent picking for Vim-style key repeat, disables natural scrolling, sets trackpad/mouse speed, keeps force click and right click enabled, disables smart typography substitutions, reduces window motion, prevents Spaces from switching automatically when activating apps, disables separate Spaces per display, puts the Dock on the right, enables Dock autohide, removes Dock show/hide animation delay, hides recent Dock apps, adds Downloads and Desktop stacks to the Dock, shows hidden files in Finder, and enables the Finder status bar. The separate-Spaces setting may require logging out and back in.
+To preview the module plan for the current OS without touching anything:
+
+```sh
+DOTFILES_DRY_RUN=1 ./install.sh
+```
+
+On macOS it also applies a few `defaults` tweaks: disables press-and-hold accent picking for Vim-style key repeat, disables natural scrolling, sets trackpad/mouse speed, keeps force click and right click enabled, disables smart typography substitutions, reduces window motion, prevents Spaces from switching automatically when activating apps, disables separate Spaces per display, puts the Dock on the right, enables Dock autohide, removes Dock show/hide animation delay, hides recent Dock apps, adds Downloads and Desktop stacks to the Dock, shows hidden files in Finder, and enables the Finder status bar. The separate-Spaces setting may require logging out and back in.
 
 ## Homebrew
 
-The `Brewfile` is installed by `./install.sh` and is intentionally curated from the current machine. It does not include every installed transitive library, generated package, VS Code extension, or one-off app.
+The `Brewfile` is installed by `scripts/macos/packages.sh` and is intentionally curated from the current machine. It does not include every installed transitive library, generated package, VS Code extension, or one-off app.
+
+On Linux, `scripts/linux/packages.sh` mirrors the CLI/core sections of the Brewfile with apt packages; optional packages are installed only when the distro repositories carry them.
 
 ## Mackup
 
@@ -65,7 +75,7 @@ Personal agent skills live in `skills/<skill-name>/SKILL.md`. See [SKILLS.md](SK
 Codex and OpenCode both discover the open-standard `~/.agents/skills` location. Using that shared location avoids duplicate skill definitions in OpenCode. Run only the skill-linking step with:
 
 ```sh
-./scripts/link-ai-skills.sh
+./scripts/common/ai-skills.sh
 ```
 
 Existing destinations that are not already the expected symlink are moved into `~/.dotfiles-backup/<timestamp>/ai-skills/` first.

@@ -6,9 +6,11 @@ set -euo pipefail
 # ~/.agents/skills location, so a single link set serves both tools without
 # creating duplicate skill definitions in OpenCode.
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../lib.sh
+source "$SCRIPT_DIR/../lib.sh"
+
 SKILLS_DIR="$DOTFILES_DIR/skills"
-BACKUP_DIR="${DOTFILES_BACKUP_DIR:-$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)}"
 
 SKILL_TARGET_DIRS=(
   "$HOME/.claude/skills"

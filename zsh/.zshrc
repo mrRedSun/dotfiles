@@ -42,7 +42,16 @@ alias fpg="flutter pub get"
 alias f="flutter pub get"
 
 # NVM
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+    \. "$HOME/.nvm/nvm.sh"  # This loads nvm
+elif [[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]]; then
+    \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm (Homebrew)
+fi
+
+# fd ships as fdfind on Debian/Ubuntu
+if [[ -z "$(command -v fd)" && -n "$(command -v fdfind)" ]]; then
+    alias fd=fdfind
+fi
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall

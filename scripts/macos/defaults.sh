@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-say() {
-  printf '%s\n' "$1"
-}
+# Apply macOS `defaults` tweaks: key repeat, smart substitutions, trackpad and
+# mouse feel, Dock layout, and Finder settings.
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../lib.sh
+source "$SCRIPT_DIR/../lib.sh"
 
 add_dock_stack() {
   local label="$1"
