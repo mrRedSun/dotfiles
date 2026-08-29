@@ -44,6 +44,11 @@ resolve_java_home() {
   fi
 }
 
+# Download a pinned cmdline-tools build used only to bootstrap the SDK. The
+# pinned archive can be older than the repository catalog, so packages are
+# installed through it and "cmdline-tools;latest" upgrades itself into
+# cmdline-tools/latest with the current device catalog; the bootstrap copy is
+# removed afterwards.
 install_cmdline_tools() {
   local tmp_dir
 
@@ -52,13 +57,13 @@ install_cmdline_tools() {
     return 0
   fi
 
-  say "⬇️  Downloading Android cmdline-tools..."
+  say "⬇️  Bootstrapping Android cmdline-tools..."
   tmp_dir="$(mktemp -d)"
   curl -fsSL "$CMDLINE_TOOLS_URL" -o "$tmp_dir/cmdline-tools.zip"
   unzip -q "$tmp_dir/cmdline-tools.zip" -d "$tmp_dir"
   mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
-  rm -rf "$ANDROID_SDK_ROOT/cmdline-tools/latest"
-  mv "$tmp_dir/cmdline-tools" "$ANDROID_SDK_ROOT/cmdline-tools/latest"
+  rm -rf "$ANDROID_SDK_ROOT/cmdline-tools/bootstrap"
+  mv "$tmp_dir/cmdline-tools" "$ANDROID_SDK_ROOT/cmdline-tools/bootstrap"
   rm -rf "$tmp_dir"
 }
 
@@ -66,7 +71,9 @@ resolve_java_home
 install_cmdline_tools
 
 sdkmanager_bin="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
-avdmanager_bin="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager"
+if [[ ! -x "$sdkmanager_bin" ]]; then
+  sdkmanager_bin="$ANDROID_SDK_ROOT/cmdline-tools/bootstrap/bin/sdkmanager"
+fi
 
 say "📦 Installing Android SDK packages..."
 mkdir -p "$ANDROID_SDK_ROOT"
@@ -74,6 +81,13 @@ mkdir -p "$ANDROID_SDK_ROOT"
 # pipefail once sdkmanager stops reading license prompts.
 (yes || true) | "$sdkmanager_bin" --sdk_root="$ANDROID_SDK_ROOT" --licenses >/dev/null
 "$sdkmanager_bin" --sdk_root="$ANDROID_SDK_ROOT" "${ANDROID_SDK_PACKAGES[@]}"
+
+if [[ -d "$ANDROID_SDK_ROOT/cmdline-tools/bootstrap" && -x "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager" ]]; then
+  say "🧹 Removing bootstrap cmdline-tools..."
+  rm -rf "$ANDROID_SDK_ROOT/cmdline-tools/bootstrap"
+fi
+
+avdmanager_bin="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager"
 
 if ! "$avdmanager_bin" list avd | grep -Fq "Name: $ANDROID_AVD_NAME"; then
   say "📱 Creating Android emulator: $ANDROID_AVD_NAME"
