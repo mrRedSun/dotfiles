@@ -2,7 +2,7 @@ name: Docker install tests
 
 on:
   push:
-    branches: [main, linux-support]
+    branches: ["**"]
   pull_request:
   workflow_dispatch:
 
