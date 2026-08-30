@@ -49,6 +49,9 @@ DNF_PACKAGES=(
   "tree"
   "unzip"
   "zsh"
+  # JDK name varies per Fedora release; --skip-unavailable installs whichever
+  # candidate exists (25 is current, 21 covers older releases).
+  "java-25-openjdk-devel"
   "java-21-openjdk-devel"
 )
 
