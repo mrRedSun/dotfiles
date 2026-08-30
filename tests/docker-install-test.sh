@@ -91,7 +91,7 @@ fi
 exec_root "useradd -m -s /bin/bash $TEST_USER && echo '$TEST_USER:$TEST_USER_PASSWORD' | chpasswd && echo '$TEST_USER ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/$TEST_USER && chmod 440 /etc/sudoers.d/$TEST_USER"
 
 say "📥 Cloning repo as $TEST_USER (login shell)..."
-exec_user 'git config --global --add safe.directory /host-repo && git clone -q /host-repo ~/Projects/dotfiles && git -C ~/Projects/dotfiles checkout -q '"$COMMITISH"
+exec_user 'git config --global --add safe.directory /host-repo && git config --global --add safe.directory /host-repo/.git && git clone -q /host-repo ~/Projects/dotfiles && git -C ~/Projects/dotfiles checkout -q '"$COMMITISH"
 
 say ""
 say "🚀 Running ./install.sh (SKIP_ANDROID=${SKIP_ANDROID:-0})..."
