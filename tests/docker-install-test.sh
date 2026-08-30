@@ -66,8 +66,13 @@ check() {
 exec_root() {
   docker exec "$CONTAINER" bash -c "$1"
 }
+# Shell-agnostic execution as the test user (checks must run the same way
+# before and after the installer switches the login shell to zsh).
 exec_user() {
-  # Login shell via su - so .zprofile/.zshrc semantics are exercised.
+  docker exec -u "$TEST_USER" -w "/home/$TEST_USER" "$CONTAINER" bash -c "$1"
+}
+# Login-shell execution: exercises .zprofile/.zshrc semantics via su -.
+exec_login() {
   docker exec -t "$CONTAINER" su - "$TEST_USER" -c "$1"
 }
 
@@ -99,7 +104,7 @@ INSTALL_ENV=""
 if [[ "${SKIP_ANDROID:-0}" == "1" ]]; then
   INSTALL_ENV="export DOTFILES_SKIP_MODULES=android-sdk; "
 fi
-if exec_user "$INSTALL_ENV"'cd ~/Projects/dotfiles && ./install.sh'; then
+if exec_login "$INSTALL_ENV"'cd ~/Projects/dotfiles && ./install.sh'; then
   PASS=$((PASS + 1))
   say "  ✅ install.sh exited 0"
 else
@@ -121,7 +126,7 @@ check "zsh-autosuggestions plugin" exec_user '[[ -d ~/.oh-my-zsh/custom/plugins/
 check "zsh-syntax-highlighting plugin" exec_user '[[ -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]]'
 check "AI skills linked for Claude Code" exec_user '[[ -L ~/.claude/skills/why ]]'
 check "AI skills linked for Codex/OpenCode" exec_user '[[ -L ~/.agents/skills/why ]]'
-check "zsh login shell loads .zprofile (ANDROID_HOME)" exec_user '[[ -n "$ANDROID_HOME" ]]'
+check "zsh login shell loads .zprofile (ANDROID_HOME)" exec_login '[[ -n "$ANDROID_HOME" ]]'
 check "git works" exec_user 'git --version'
 
 if [[ "${SKIP_ANDROID:-0}" != "1" ]]; then
@@ -131,7 +136,7 @@ fi
 
 say ""
 say "🔁 Running ./install.sh again (idempotency)..."
-if exec_user "$INSTALL_ENV"'cd ~/Projects/dotfiles && ./install.sh > /tmp/install-rerun.log 2>&1'; then
+if exec_login "$INSTALL_ENV"'cd ~/Projects/dotfiles && ./install.sh > /tmp/install-rerun.log 2>&1'; then
   PASS=$((PASS + 1))
   say "  ✅ second run exited 0"
 else

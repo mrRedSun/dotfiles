@@ -88,7 +88,7 @@ DNF_OPTIONAL_PACKAGES=(
   "rclone"
   "smartmontools"
   "wireguard-tools"
-  "imagemagick"
+  "ImageMagick"
   "ghostscript"
   "mpv"
 )
