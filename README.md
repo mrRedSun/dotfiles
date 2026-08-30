@@ -90,6 +90,15 @@ Codex and OpenCode both discover the open-standard `~/.agents/skills` location. 
 
 Existing destinations that are not already the expected symlink are moved into `~/.dotfiles-backup/<timestamp>/ai-skills/` first.
 
+### Skill attribution
+
+Most skills in `skills/` come from two public collections (some copied as-is, some lightly adapted):
+
+- [Matt Pocock](https://github.com/mattpocock) — [mattpocock/skills](https://github.com/mattpocock/skills): `diagnosing-bugs`, `grilling`, `grill-me`, `handoff`, `resolving-merge-conflicts`, `wait-what`, `writing-for-agents`
+- [Michael Ramos](https://github.com/backnotprop) — [backnotprop/pstack](https://github.com/backnotprop/pstack) (also ships in [cursor/plugins](https://github.com/cursor/plugins)): `architect`, `arena`, `blast-radius`, `bro`, `how`, `interrogate`, `show-me-your-work`, `swarm`, `tdd`, `teach`, `technical-writing`, `unslop`, `why`
+
+All credit for those skills belongs to their authors; the upstream repos carry the canonical versions.
+
 ## Manual Imports
 
 Some apps do not provide a safe command-line import path for public dotfiles.
