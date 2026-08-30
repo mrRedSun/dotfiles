@@ -49,7 +49,7 @@ DNF_PACKAGES=(
   "tree"
   "unzip"
   "zsh"
-  "java-17-openjdk-devel"
+  "java-21-openjdk-devel"
 )
 
 # Mirrors more of the Brewfile where available; distros without these packages
@@ -81,7 +81,6 @@ DNF_OPTIONAL_PACKAGES=(
   "ninja-build"
   "ccache"
   "pipx"
-  "gradle"
   "minicom"
   "aria2"
   "nmap"

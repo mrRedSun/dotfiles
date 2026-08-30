@@ -34,7 +34,7 @@ resolve_java_home() {
 
   local java_bin
   if ! java_bin="$(readlink -f "$(command -v java)" 2>/dev/null)"; then
-    say "❌ java not found; install openjdk-17-jdk first (packages module)." >&2
+    say "❌ java not found; install a JDK first (packages module)." >&2
     return 1
   fi
 
