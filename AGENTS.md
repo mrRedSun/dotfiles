@@ -11,7 +11,7 @@ Personal dotfiles for macOS and Linux. There is no build system, linter, or test
 - `scripts/common/<module>.sh` — OS-agnostic modules (`shell`, `git`, `tools`, `ai-skills`).
 - `scripts/macos/<module>.sh` — macOS-only modules (`packages`, `android-sdk`, `preferences`, `defaults`, `desktop-apps`).
 - `scripts/linux/<module>.sh` — Linux-only modules (`packages`, `android-sdk`, `defaults`).
-- `Brewfile` — curated Homebrew/mas package list used by `scripts/macos/packages.sh`.
+- `Brewfile` — curated Homebrew/mas package list used by `scripts/macos/packages.sh`. When a cask fails because stale files occupy its artifact paths, the module moves those files into the backup directory and reinstalls the cask.
 - `zsh/`, `git/`, `config/` — config files symlinked into `$HOME` by the modules.
 - `tests/docker-install-test.sh <image>` — end-to-end install test in a fresh container (create user, login, clone, install, assert, cleanup); used by `.github/workflows/docker-tests.yml` on `ubuntu:24.04` and `fedora:latest`.
 
