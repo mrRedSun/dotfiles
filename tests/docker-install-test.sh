@@ -97,7 +97,7 @@ say ""
 say "🚀 Running ./install.sh (SKIP_ANDROID=${SKIP_ANDROID:-0})..."
 INSTALL_ENV=""
 if [[ "${SKIP_ANDROID:-0}" == "1" ]]; then
-  INSTALL_ENV="DOTFILES_SKIP_MODULES=android-sdk "
+  INSTALL_ENV="export DOTFILES_SKIP_MODULES=android-sdk; "
 fi
 if exec_user "$INSTALL_ENV"'cd ~/Projects/dotfiles && ./install.sh'; then
   PASS=$((PASS + 1))
