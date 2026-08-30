@@ -9,7 +9,7 @@ Personal dotfiles for macOS and Linux. There is no build system, linter, or test
 - `install.sh` — entry point: detects the OS (`uname`), auto-pulls when safe, and runs install modules in order. Idempotent; run from an interactive terminal (some modules need sudo, and macOS needs Mac App Store auth). `DOTFILES_DRY_RUN=1 ./install.sh` prints the module plan without executing anything.
 - `scripts/lib.sh` — shared helpers sourced by the runner and every module (`say`, `detect_os`, `link_file`, `warm_sudo`).
 - `scripts/common/<module>.sh` — OS-agnostic modules (`shell`, `git`, `tools`, `ai-skills`).
-- `scripts/macos/<module>.sh` — macOS-only modules (`packages`, `android-sdk`, `preferences`, `defaults`, `desktop-apps`).
+- `scripts/macos/<module>.sh` — macOS-only modules (`packages`, `android-sdk`, `preferences`, `defaults`).
 - `scripts/linux/<module>.sh` — Linux-only modules (`packages`, `android-sdk`, `defaults`).
 - `Brewfile` — curated Homebrew/mas package list used by `scripts/macos/packages.sh`. When a cask fails because stale files occupy its artifact paths, the module moves those files into the backup directory and reinstalls the cask.
 - `zsh/`, `git/`, `config/` — config files symlinked into `$HOME` by the modules.
@@ -17,7 +17,7 @@ Personal dotfiles for macOS and Linux. There is no build system, linter, or test
 
 ## Conventions
 
-- Module resolution: for each name in `MODULES` in `install.sh`, prefer `scripts/<os>/<name>.sh`, then fall back to `scripts/common/<name>.sh`; if neither exists the module is skipped (e.g. `preferences` and `desktop-apps` on Linux).
+- Module resolution: for each name in `MODULES` in `install.sh`, prefer `scripts/<os>/<name>.sh`, then fall back to `scripts/common/<name>.sh`; if neither exists the module is skipped (e.g. `preferences` on Linux).
 - Modules are standalone scripts: `#!/usr/bin/env bash`, `set -euo pipefail`, source `scripts/lib.sh`, do one job, and stay idempotent.
 - Never overwrite user files: check before installing/linking, back up to `~/.dotfiles-backup/` instead.
 - Keep shared helpers in `scripts/lib.sh`; do not duplicate them across modules.

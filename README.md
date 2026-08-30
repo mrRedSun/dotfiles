@@ -41,7 +41,7 @@ To exclude modules, pass a space-separated list in `DOTFILES_SKIP_MODULES`, such
 
 The installer detects the OS with `uname` and runs modules in a fixed order. For each module it prefers `scripts/<os>/<module>.sh` and falls back to `scripts/common/<module>.sh`. If neither file exists, the installer skips the module.
 
-On macOS, the modules install Homebrew and the `Brewfile`, the Android SDK with a Pixel emulator, Oh My Zsh with its custom plugins (`zsh-vi-mode`, `zsh-autosuggestions`, `zsh-syntax-highlighting`), the config symlinks, the agent skills, a Mackup restore, the `defaults` tweaks, and a first launch of the desktop apps.
+On macOS, the modules install Homebrew and the `Brewfile`, the Android SDK with a Pixel emulator, Oh My Zsh with its custom plugins (`zsh-vi-mode`, `zsh-autosuggestions`, `zsh-syntax-highlighting`), the config symlinks, the agent skills, a Mackup restore, and the `defaults` tweaks.
 
 On Linux, the modules install the apt or dnf package equivalents, the Android SDK command-line tools with an x86_64 emulator, the same shared symlinks and skills, and a few GNOME tweaks.
 

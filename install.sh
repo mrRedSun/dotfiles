@@ -37,7 +37,6 @@ MODULES=(
   "preferences"
   "ai-skills"
   "defaults"
-  "desktop-apps"
 )
 
 # Pull only when the working tree is clean. Local edits are treated as user
