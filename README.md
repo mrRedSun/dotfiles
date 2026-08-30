@@ -1,86 +1,111 @@
 # Dotfiles
 
-Personal development environment configuration and bootstrap script.
+My development environment for macOS and Linux: an installer, shell, Git, editor, and terminal configs, and a set of agent skills.
 
-## What's Included
+## What's included
 
 - Zsh config: `zsh/.zshrc`, `zsh/.zprofile`, `zsh/.zshenv`
 - Git config: `git/.gitconfig`, `git/.gitignore`
 - Neovim config: `config/nvim`
 - tmux config: `config/tmux/.tmux.conf`
-- AeroSpace config: `config/aerospace/aerospace.toml`
-- Karabiner-Elements config: `config/karabiner`
-- Mackup app preferences: `config/mackup.cfg`, `config/mackup`
-- Rectangle Pro export: `config/rectangle-pro/RectangleProConfig.json`
-- Personal AI skills: `skills/`
-- macOS tweaks: `scripts/macos.sh`
-- Homebrew package list: `Brewfile`
-- Install script: `install.sh`
+- macOS app config: AeroSpace (`config/aerospace`), Karabiner-Elements (`config/karabiner`), Mackup (`config/mackup.cfg`, `config/mackup`), Rectangle Pro (`config/rectangle-pro`)
+- Agent skills: `skills/`
+- Install modules: `scripts/common/`, `scripts/macos/`, `scripts/linux/`
+- Homebrew package list (macOS): `Brewfile`
 
 ## Install
 
-On a new Mac, clone the repo and run the installer:
+On a new machine, clone the repo and run the installer:
 
 ```sh
 mkdir -p ~/Projects && git clone https://github.com/mrRedSun/dotfiles.git ~/Projects/dotfiles && cd ~/Projects/dotfiles && ./install.sh
 ```
 
-From this repo:
+From an existing checkout, run `./install.sh`.
+
+Run the installer from an interactive terminal. The package modules need admin rights: each one asks for your password and keeps the sudo session alive while it runs.
+
+The installer is idempotent. Run it as often as you like; each module skips work that is already done. If the checkout is clean and has an upstream branch, the installer pulls the latest changes with `git pull --ff-only` before linking. If the working tree is dirty, it skips the pull and continues.
+
+If a file exists at a link target and is not already the expected symlink, the installer moves the file into `~/.dotfiles-backup/<timestamp>/` before it creates the link.
+
+To print the module plan for the current OS without running anything:
 
 ```sh
-./install.sh
+DOTFILES_DRY_RUN=1 ./install.sh
 ```
 
-The installer installs Homebrew if needed, installs missing Brewfile packages without upgrading already-installed dependencies, installs Oh My Zsh and its custom plugins (`zsh-vi-mode`, `zsh-autosuggestions`, `zsh-syntax-highlighting`) into `~/.oh-my-zsh/custom/plugins`, creates symlinks from this repo into your home directory, links personal AI skills for Claude Code, Codex, and OpenCode, restores supported app preferences with Mackup copy mode, and applies macOS tweaks. If a target file already exists and is not already the expected symlink, it is moved into `~/.dotfiles-backup/<timestamp>/` before the new link is created.
+To exclude modules, pass a space-separated list in `DOTFILES_SKIP_MODULES`, such as `DOTFILES_SKIP_MODULES="android-sdk" ./install.sh`.
 
-Run the installer from an interactive terminal. Some Homebrew casks and Mac App Store installs need admin rights; the installer asks for your password once up front and keeps that sudo session alive until it finishes.
+## How the installer works
 
-The installer is safe to run repeatedly. If this directory is a Git checkout with an upstream branch and no local changes, it pulls the latest dotfiles with `git pull --ff-only` before linking. If local changes are present, it skips the pull and keeps going.
+The installer detects the OS with `uname` and runs modules in a fixed order. For each module it prefers `scripts/<os>/<module>.sh` and falls back to `scripts/common/<module>.sh`. If neither file exists, the installer skips the module.
 
-It also applies a few macOS defaults: disables press-and-hold accent picking for Vim-style key repeat, disables natural scrolling, sets trackpad/mouse speed, keeps force click and right click enabled, disables smart typography substitutions, reduces window motion, prevents Spaces from switching automatically when activating apps, disables separate Spaces per display, puts the Dock on the right, enables Dock autohide, removes Dock show/hide animation delay, hides recent Dock apps, adds Downloads and Desktop stacks to the Dock, shows hidden files in Finder, and enables the Finder status bar. The separate-Spaces setting may require logging out and back in.
+On macOS, the modules install Homebrew and the `Brewfile`, the Android SDK with a Pixel emulator, Oh My Zsh with its custom plugins (`zsh-vi-mode`, `zsh-autosuggestions`, `zsh-syntax-highlighting`), the config symlinks, the agent skills, a Mackup restore, the `defaults` tweaks, and a first launch of the desktop apps.
 
-## Homebrew
+On Linux, the modules install the apt or dnf package equivalents, the Android SDK command-line tools with an x86_64 emulator, the same shared symlinks and skills, and a few GNOME tweaks.
 
-The `Brewfile` is installed by `./install.sh` and is intentionally curated from the current machine. It does not include every installed transitive library, generated package, VS Code extension, or one-off app.
+### What the defaults module changes on macOS
+
+`scripts/macos/defaults.sh` applies these `defaults` tweaks:
+
+- Key repeat: press-and-hold accent picking off, for Vim-style repeat.
+- Input: natural scrolling off, trackpad and mouse speed at maximum, force click and right click on, smart typography substitutions off.
+- Windows and Spaces: window motion reduced, apps no longer switch Spaces on activation, one set of Spaces across displays. The Spaces change takes effect after you log out and log back in.
+- Dock: on the right, autohidden, no show or hide animation delay, recent apps hidden, Downloads and Desktop stacks added.
+- Finder: hidden files shown, status bar shown.
+
+## Packages
+
+`scripts/macos/packages.sh` installs the `Brewfile`, which is curated from the current machine. It does not include every transitive library, generated package, VS Code extension, or one-off app.
+
+`scripts/linux/packages.sh` mirrors most of the CLI and core sections of the `Brewfile` with apt (Debian and Ubuntu) or dnf (Fedora). Packages that your distro's repositories do not carry are skipped with a notice.
 
 ## Mackup
 
-App preference files that are awkward to symlink or import manually are restored with Mackup. The repo uses a narrow Mackup config at `config/mackup.cfg`, currently scoped to iTerm2 only, with storage under `config/mackup`.
-
-The installer links `~/.mackup.cfg` and runs:
+App preferences that are awkward to symlink are restored with Mackup, using the narrow config in `config/mackup.cfg` (iTerm2 only, storage under `config/mackup`). The installer links `~/.mackup.cfg` and runs:
 
 ```sh
 mackup --config-file config/mackup.cfg restore --force
 ```
 
-Use Mackup copy/restore mode for macOS app preferences. Do not use Mackup link mode on modern macOS.
+Use Mackup copy or restore mode for macOS app preferences. Mackup link mode breaks preferences on modern macOS.
 
-## AI Skills
+## AI skills
 
-Personal agent skills live in `skills/<skill-name>/SKILL.md`. See [SKILLS.md](SKILLS.md) for a short, practical catalog. The installer links each skill directory individually so existing unmanaged skills can remain alongside the repo-managed set:
+Agent skills live in `skills/<skill-name>/SKILL.md`. See [SKILLS.md](SKILLS.md) for a catalog. The installer links each skill directory individually, so unmanaged skills stay alongside the repo-managed set:
 
 - `~/.claude/skills/<skill-name>` for Claude Code
-- `~/.agents/skills/<skill-name>` for Codex and OpenCode
+- `~/.agents/skills/<skill-name>` for Codex and OpenCode, which both discover this shared location
 
-Codex and OpenCode both discover the open-standard `~/.agents/skills` location. Using that shared location avoids duplicate skill definitions in OpenCode. Run only the skill-linking step with:
+To run only the skill-linking step:
 
 ```sh
-./scripts/link-ai-skills.sh
+./scripts/common/ai-skills.sh
 ```
 
-Existing destinations that are not already the expected symlink are moved into `~/.dotfiles-backup/<timestamp>/ai-skills/` first.
+Destinations that are not already the expected symlink are moved into `~/.dotfiles-backup/<timestamp>/ai-skills/` first.
 
-## Manual Imports
+### Skill attribution
 
-Some apps do not provide a safe command-line import path for public dotfiles.
+Most skills in `skills/` come from two public collections, some copied as-is and some lightly adapted:
 
-Rectangle Pro preferences can be restored from:
+- From [Matt Pocock](https://github.com/mattpocock)'s [mattpocock/skills](https://github.com/mattpocock/skills): `diagnosing-bugs`, `grilling`, `grill-me`, `handoff`, `resolving-merge-conflicts`, `wait-what`, `writing-for-agents`
+- From [Michael Ramos](https://github.com/backnotprop)'s [backnotprop/pstack](https://github.com/backnotprop/pstack), which also ships in [cursor/plugins](https://github.com/cursor/plugins): `architect`, `arena`, `blast-radius`, `bro`, `how`, `interrogate`, `show-me-your-work`, `swarm`, `tdd`, `teach`, `technical-writing`, `unslop`, `why`
 
-```text
-config/rectangle-pro/RectangleProConfig.json
+Credit for those skills belongs to their authors, and the upstream repos carry the canonical versions.
+
+## Import Rectangle Pro manually
+
+Rectangle Pro has no command-line import. Import `config/rectangle-pro/RectangleProConfig.json` from its preferences UI.
+
+## Run the install tests
+
+Every push runs the installer end-to-end in Docker on `ubuntu:24.04` and `fedora:latest` (`.github/workflows/docker-tests.yml`). Each run spawns a fresh container, creates a test user, logs in, clones the repo, runs the full install with the Android SDK, checks the results and an idempotent re-run, then deletes the container. To run the test locally without the Android download:
+
+```sh
+SKIP_ANDROID=1 ./tests/docker-install-test.sh ubuntu:24.04
 ```
-
-Import it from Rectangle Pro's preferences UI.
 
 ## Customize
 
@@ -90,11 +115,8 @@ Edit the files in this repo, then open a new shell or reload Zsh:
 source ~/.zshrc
 ```
 
-For future machine-specific or private settings, prefer local files that are not committed:
+Keep machine-specific or private settings in files that are not committed. `.zshrc` sources `~/.zshrc.local`, and `.gitconfig` includes `~/.gitconfig.local`.
 
-- `~/.zshrc.local`
-- `~/.gitconfig.local`
+## Before you publish
 
-## Notes
-
-This repo was seeded from the current home-directory configs. Before publishing it, review files such as `git/.gitconfig` and shell aliases for personal names, emails, hosts, and machine-specific paths.
+This repo was seeded from my home-directory configs. Review `git/.gitconfig` and the shell aliases for personal names, emails, hosts, and machine-specific paths.

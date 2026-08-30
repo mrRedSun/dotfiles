@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-say() {
-  printf '%s\n' "$1"
-}
+# Apply macOS `defaults` tweaks: key repeat, smart substitutions, trackpad and
+# mouse feel, Dock layout, and Finder settings.
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../lib.sh
+source "$SCRIPT_DIR/../lib.sh"
 
 add_dock_stack() {
   local label="$1"
   local path="$2"
   local arrangement="$3"
 
-  if defaults read com.apple.dock persistent-others 2>/dev/null | grep -Fq "file://$path/"; then
+  if defaults read com.apple.dock persistent-others 2>/dev/null | grep -F "file://$path/" >/dev/null; then
     say "✅ Dock stack already present: $label"
     return 0
   fi

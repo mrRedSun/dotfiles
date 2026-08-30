@@ -1,0 +1,31 @@
+name: Docker install tests
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  docker-install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: "ubuntu:24.04"
+          - image: "fedora:latest"
+    name: install (${{ matrix.image }})
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run install test in container
+        run: ./tests/docker-install-test.sh "${{ matrix.image }}"
+        env:
+          COMMITISH: ${{ github.sha }}
+          # Scheduled/push runs are full fidelity; manual dispatch runs skip the
+          # multi-GB Android SDK download for a quick signal.
+          SKIP_ANDROID: ${{ github.event_name == 'workflow_dispatch' && '1' || '0' }}

@@ -27,6 +27,6 @@ These are the reusable, project-independent skills included in this repository.
 
 ## Using the Skills
 
-Run `./install.sh` to sync the skills as part of the normal dotfiles setup. It links each `skills/<name>` directory into Claude Code and into the shared Codex/OpenCode skill directory. To sync only the skills, run `./scripts/link-ai-skills.sh`.
+Run `./install.sh` to sync the skills as part of the normal dotfiles setup. It links each `skills/<name>` directory into Claude Code and into the shared Codex/OpenCode skill directory. To sync only the skills, run `./scripts/common/ai-skills.sh`.
 
 Each skill's full instructions and any supporting files live under `skills/<name>/`.

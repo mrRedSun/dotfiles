@@ -42,7 +42,16 @@ alias fpg="flutter pub get"
 alias f="flutter pub get"
 
 # NVM
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+    \. "$HOME/.nvm/nvm.sh"  # This loads nvm
+elif [[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]]; then
+    \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm (Homebrew)
+fi
+
+# fd ships as fdfind on Debian/Ubuntu
+if [[ -z "$(command -v fd)" && -n "$(command -v fdfind)" ]]; then
+    alias fd=fdfind
+fi
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
@@ -55,8 +64,14 @@ alias f="flutter pub get"
 # cool aliases
 alias finger='adb -e emu finger touch 1 && adb -e emu finger remove 1'
 
-alias ls="eza --icons=always"
+# eza is optional on some Linux distros; keep ls working when it is missing
+if [[ -n "$(command -v eza)" ]]; then
+    alias ls="eza --icons=always"
+fi
 alias vimconf="cd ~/.config/nvim/ && nvim ."
 
 # tmux
 alias tmux="tmux -f $HOME/.config/tmux/.tmux.conf"
+
+# Machine-local overrides
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
