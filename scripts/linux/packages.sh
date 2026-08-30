@@ -122,7 +122,7 @@ is_available_dnf() {
 }
 
 refresh_metadata_apt() {
-  sudo apt-get update
+  sudo env DEBIAN_FRONTEND=noninteractive apt-get update
 }
 refresh_metadata_dnf() {
   sudo dnf -q makecache
@@ -144,7 +144,8 @@ install_apt_packages() {
     return 0
   fi
 
-  sudo apt-get install -y "${available[@]}"
+  # noninteractive keeps debconf (e.g. tzdata) from blocking automation.
+  sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y "${available[@]}"
 }
 
 install_dnf_packages() {

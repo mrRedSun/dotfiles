@@ -84,7 +84,7 @@ docker run -d --name "$CONTAINER" -v "$REPO_ROOT:/host-repo:ro" "$IMAGE" sleep i
 say "🔧 Preparing container (git, sudo, $TEST_USER user)..."
 FAMILY="$(exec_root 'command -v apt-get >/dev/null 2>&1 && echo apt || echo dnf')"
 if [[ "$FAMILY" == "apt" ]]; then
-  exec_root 'apt-get update -qq >/dev/null 2>&1 && apt-get install -y -qq git sudo >/dev/null 2>&1'
+  exec_root 'export DEBIAN_FRONTEND=noninteractive; apt-get update -qq >/dev/null 2>&1 && apt-get install -y -qq git sudo >/dev/null 2>&1'
 else
   exec_root 'dnf -y -q install git sudo >/dev/null 2>&1'
 fi
