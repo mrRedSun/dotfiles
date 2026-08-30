@@ -138,6 +138,62 @@ install_password_dependencies() {
   fi
 }
 
+# List Brewfile casks that are not installed. `bundle check` exits non-zero
+# whenever anything is unmet, which is the expected outcome here. The list of
+# unmet entries goes to stderr; the tap warnings on the same stream do not
+# match the pattern.
+missing_brewfile_casks() {
+  HOMEBREW_BUNDLE_NO_UPGRADE=1 "$BREW_BIN" bundle check --verbose --file "$DOTFILES_DIR/Brewfile" 2>&1 |
+    sed -n 's/^.* Cask \(.*\) needs to be installed.*/\1/p'
+}
+
+# Move the existing artifact targets of a not-installed cask into the backup
+# directory. Paths are mirrored under the backup directory so the files can
+# be restored as-is.
+backup_conflicting_artifacts() {
+  local cask="$1"
+  local target
+  local backup_path
+
+  if ! command -v jq >/dev/null 2>&1; then
+    say "⚠️  jq not found; cannot inspect artifacts of $cask."
+    return 0
+  fi
+
+  while IFS= read -r target; do
+    [[ -z "$target" ]] && continue
+    [[ -e "$target" || -L "$target" ]] || continue
+
+    backup_path="$BACKUP_DIR/${target#/}"
+    mkdir -p "$(dirname "$backup_path")"
+    mv "$target" "$backup_path"
+    say "📦 Backed up: $target -> $backup_path"
+  done < <("$BREW_BIN" info --cask --json=v2 "$cask" 2>/dev/null | jq -r '.casks[0].artifacts[]?.target // empty')
+}
+
+# Stale copies of cask artifacts fail the whole `brew bundle` pass: a manual
+# app install too old to adopt, font files from an older release, or a
+# Generic Artifact target left behind by an uninstalled cask. Back the
+# conflicting files up, then install each missing cask on its own.
+recover_failed_casks() {
+  local cask
+  local failed_count=0
+
+  while IFS= read -r cask; do
+    [[ -z "$cask" ]] && continue
+
+    backup_conflicting_artifacts "$cask"
+    if "$BREW_BIN" install --cask "$cask"; then
+      say "✅ Installed $cask."
+    else
+      failed_count=$((failed_count + 1))
+      say "❌ $cask still failed to install." >&2
+    fi
+  done < <(missing_brewfile_casks)
+
+  [[ "$failed_count" -eq 0 ]]
+}
+
 # Install missing Brewfile items without upgrading already-installed
 # dependencies; a routine dotfiles sync should not upgrade every outdated
 # package on the machine.
@@ -148,7 +204,19 @@ install_dependencies() {
   fi
 
   say "📦 Installing Brewfile dependencies..."
-  HOMEBREW_BUNDLE_NO_UPGRADE=1 "$BREW_BIN" bundle install --file "$DOTFILES_DIR/Brewfile"
+  if HOMEBREW_BUNDLE_NO_UPGRADE=1 "$BREW_BIN" bundle install --file "$DOTFILES_DIR/Brewfile"; then
+    return 0
+  fi
+
+  # One stale artifact must not leave the rest of the Brewfile uninstalled.
+  recover_failed_casks || true
+
+  if HOMEBREW_BUNDLE_NO_UPGRADE=1 "$BREW_BIN" bundle check --file "$DOTFILES_DIR/Brewfile"; then
+    return 0
+  fi
+
+  say "❌ Some Brewfile dependencies failed to install. Run 'brew bundle install --verbose --file $DOTFILES_DIR/Brewfile' for the remaining errors." >&2
+  return 1
 }
 
 install_homebrew
