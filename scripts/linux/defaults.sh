@@ -28,7 +28,7 @@ apply_gsetting() {
   gsettings set "$schema" "$key" "$value" || true
   # Headless sessions accept the write but silently fail to commit it to
   # dconf; verify instead of reporting blind success.
-  if gsettings get "$schema" "$key" 2>/dev/null | grep -Fq "$value"; then
+  if gsettings get "$schema" "$key" 2>/dev/null | grep -F "$value" >/dev/null; then
     say "✅ $schema $key = $value"
   else
     say "⚠️  Not applied (no active desktop session?): $schema/$key"

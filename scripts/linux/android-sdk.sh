@@ -93,7 +93,7 @@ fi
 
 avdmanager_bin="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager"
 
-if ! "$avdmanager_bin" list avd | grep -Eq "^[[:space:]]*Name: ${ANDROID_AVD_NAME}$"; then
+if ! "$avdmanager_bin" list avd | grep -E "^[[:space:]]*Name: ${ANDROID_AVD_NAME}$" >/dev/null; then
   say "📱 Creating Android emulator: $ANDROID_AVD_NAME"
   echo "no" | "$avdmanager_bin" create avd --name "$ANDROID_AVD_NAME" --package "$ANDROID_AVD_PACKAGE" --device "$ANDROID_AVD_DEVICE"
 fi

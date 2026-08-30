@@ -104,21 +104,23 @@ detect_package_family() {
 }
 
 # dpkg -s also reports removed-but-not-purged packages as installed; require
-# the "ii" (installed) status abbreviations instead.
+# the "ii" (installed) status abbreviations instead. The grep reads its whole
+# input: with -q it could exit early and SIGPIPE the producer under pipefail.
 is_installed_apt() {
-  dpkg-query -W -f='${db:Status-Abbrev}' "$1" 2>/dev/null | grep -q '^ii'
+  dpkg-query -W -f='${db:Status-Abbrev}' "$1" 2>/dev/null | grep '^ii' >/dev/null
 }
 is_installed_dnf() {
   rpm -q "$1" >/dev/null 2>&1
 }
 
 # apt-cache show exits 0 with empty output for virtual packages and prints
-# noisy errors for unknown ones; require an actual Package record.
+# noisy errors for unknown ones; require an actual Package record. The grep
+# reads its whole input to avoid SIGPIPE-ing apt-cache under pipefail.
 is_available_apt() {
-  apt-cache show "$1" 2>/dev/null | grep -q '^Package:'
+  apt-cache show "$1" 2>/dev/null | grep '^Package:' >/dev/null
 }
 is_available_dnf() {
-  dnf -q repoquery "$1" 2>/dev/null | grep -q .
+  dnf -q repoquery "$1" 2>/dev/null | grep . >/dev/null
 }
 
 refresh_metadata_apt() {

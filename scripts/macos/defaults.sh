@@ -13,7 +13,7 @@ add_dock_stack() {
   local path="$2"
   local arrangement="$3"
 
-  if defaults read com.apple.dock persistent-others 2>/dev/null | grep -Fq "file://$path/"; then
+  if defaults read com.apple.dock persistent-others 2>/dev/null | grep -F "file://$path/" >/dev/null; then
     say "✅ Dock stack already present: $label"
     return 0
   fi

@@ -59,7 +59,7 @@ install_homebrew() {
 is_mas_app_installed() {
   local app_id="$1"
 
-  mas list | awk '{print $1}' | grep -Fxq "$app_id"
+  mas list | awk '{print $1}' | grep -Fx "$app_id" >/dev/null
 }
 
 install_mas_cli() {
