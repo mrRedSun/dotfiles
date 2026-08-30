@@ -119,9 +119,6 @@ is_installed_dnf() {
 is_available_apt() {
   apt-cache show "$1" 2>/dev/null | grep '^Package:' >/dev/null
 }
-is_available_dnf() {
-  dnf -q repoquery "$1" 2>/dev/null | grep . >/dev/null
-}
 
 refresh_metadata_apt() {
   sudo env DEBIAN_FRONTEND=noninteractive apt-get update
@@ -151,22 +148,9 @@ install_apt_packages() {
 }
 
 install_dnf_packages() {
-  local package
-  local available=()
-
-  for package in "$@"; do
-    if is_available_dnf "$package"; then
-      available+=("$package")
-    else
-      say "⏭️  Not in dnf repositories, skipping: $package"
-    fi
-  done
-
-  if [[ "${#available[@]}" -eq 0 ]]; then
-    return 0
-  fi
-
-  sudo dnf install -y "${available[@]}"
+  # dnf5's --skip-unavailable handles distro variance natively; probing
+  # per-package as a non-root user is unreliable on dnf (metadata cache).
+  sudo dnf install -y --skip-unavailable "$@"
 }
 
 collect_missing_packages() {
