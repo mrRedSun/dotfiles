@@ -116,10 +116,14 @@ install_password_dependencies() {
   warm_sudo
   say "🔑 Installing password-gated dependencies first..."
 
-  for i in "${!missing_mas_ids[@]}"; do
-    say "📲 Installing ${missing_mas_names[$i]} from the Mac App Store..."
-    mas install "${missing_mas_ids[$i]}"
-  done
+  # Guard the index expansion: empty arrays are fatal under `set -u` in the
+  # bash 3.2 that ships with macOS.
+  if [[ "${#missing_mas_ids[@]}" -gt 0 ]]; then
+    for i in "${!missing_mas_ids[@]}"; do
+      say "📲 Installing ${missing_mas_names[$i]} from the Mac App Store..."
+      mas install "${missing_mas_ids[$i]}"
+    done
+  fi
 
   if [[ "${#missing_casks[@]}" -gt 0 ]]; then
     say "☕ Installing privileged casks..."
@@ -134,14 +138,21 @@ install_password_dependencies() {
   fi
 }
 
+# Install missing Brewfile items without upgrading already-installed
+# dependencies; a routine dotfiles sync should not upgrade every outdated
+# package on the machine.
+install_dependencies() {
+  if HOMEBREW_BUNDLE_NO_UPGRADE=1 "$BREW_BIN" bundle check --file "$DOTFILES_DIR/Brewfile"; then
+    say "✅ Brewfile dependencies already installed."
+    return 0
+  fi
+
+  say "📦 Installing Brewfile dependencies..."
+  HOMEBREW_BUNDLE_NO_UPGRADE=1 "$BREW_BIN" bundle install --file "$DOTFILES_DIR/Brewfile"
+}
+
 install_homebrew
 install_password_dependencies
-
-if "$BREW_BIN" bundle check --file "$DOTFILES_DIR/Brewfile"; then
-  say "✅ Brewfile dependencies already installed."
-else
-  say "📦 Installing Brewfile dependencies..."
-  "$BREW_BIN" bundle install --file "$DOTFILES_DIR/Brewfile"
-fi
+install_dependencies
 
 say "✅ Homebrew packages installed."

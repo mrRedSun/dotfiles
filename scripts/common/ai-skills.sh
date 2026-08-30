@@ -25,10 +25,6 @@ SKILL_TARGET_BACKUP_KEYS=(
   "agents"
 )
 
-say() {
-  printf '%s\n' "$1"
-}
-
 backup_target() {
   local target_path="$1"
   local backup_key="$2"

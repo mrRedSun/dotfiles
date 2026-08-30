@@ -60,8 +60,8 @@ warm_sudo() {
   fi
 
   sudo -k
-  # `sudo -n -v` still demands a password under NOPASSWD; probe with a real
-  # command instead.
+  # `sudo -n -v` still demands a password under command-scoped NOPASSWD rules;
+  # probing with a real command covers every configuration.
   if sudo -n true 2>/dev/null; then
     SUDO_WARMED=1
     return 0

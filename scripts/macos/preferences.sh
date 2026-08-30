@@ -15,8 +15,22 @@ say "🍎 Preferences"
 # broken on modern macOS.
 restore_mackup_configs() {
   local mackup_config="$DOTFILES_DIR/config/mackup.cfg"
+  local mackup_bin
+  local candidate
 
-  if ! command -v mackup >/dev/null 2>&1; then
+  # Modules run in separate processes without the runner's brew shellenv, so
+  # resolve mackup through the canonical brew prefixes too.
+  mackup_bin="$(command -v mackup || true)"
+  if [[ -z "$mackup_bin" ]]; then
+    for candidate in /opt/homebrew/bin/mackup /usr/local/bin/mackup; do
+      if [[ -x "$candidate" ]]; then
+        mackup_bin="$candidate"
+        break
+      fi
+    done
+  fi
+
+  if [[ -z "$mackup_bin" ]]; then
     say "⚠️  Mackup not found; skipping app preference restore."
     return 0
   fi
@@ -27,7 +41,7 @@ restore_mackup_configs() {
   fi
 
   say "📦 Restoring app preferences with Mackup..."
-  mackup --config-file "$mackup_config" restore --force
+  "$mackup_bin" --config-file "$mackup_config" restore --force
   defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool false
   defaults delete com.googlecode.iterm2 PrefsCustomFolder >/dev/null 2>&1 || true
   killall cfprefsd >/dev/null 2>&1 || true

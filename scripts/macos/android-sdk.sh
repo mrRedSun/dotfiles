@@ -48,7 +48,7 @@ if [[ ! -x "$avdmanager_bin" ]]; then
   avdmanager_bin="$(dirname "$sdkmanager_bin")/avdmanager"
 fi
 if [[ -x "$avdmanager_bin" ]] && ! env ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" JAVA_HOME=/opt/homebrew/opt/openjdk@17 PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH" \
-  "$avdmanager_bin" list avd | grep -Fq "Name: $ANDROID_AVD_NAME"; then
+  "$avdmanager_bin" list avd | grep -Eq "^[[:space:]]*Name: ${ANDROID_AVD_NAME}$"; then
   say "📱 Creating Android emulator: $ANDROID_AVD_NAME"
   echo "no" | env ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" JAVA_HOME=/opt/homebrew/opt/openjdk@17 PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH" \
     "$avdmanager_bin" create avd --name "$ANDROID_AVD_NAME" --package "$ANDROID_AVD_PACKAGE" --device "$ANDROID_AVD_DEVICE"

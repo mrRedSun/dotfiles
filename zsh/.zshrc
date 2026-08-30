@@ -64,8 +64,14 @@ fi
 # cool aliases
 alias finger='adb -e emu finger touch 1 && adb -e emu finger remove 1'
 
-alias ls="eza --icons=always"
+# eza is optional on some Linux distros; keep ls working when it is missing
+if [[ -n "$(command -v eza)" ]]; then
+    alias ls="eza --icons=always"
+fi
 alias vimconf="cd ~/.config/nvim/ && nvim ."
 
 # tmux
 alias tmux="tmux -f $HOME/.config/tmux/.tmux.conf"
+
+# Machine-local overrides
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"

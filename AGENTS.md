@@ -13,6 +13,7 @@ Personal dotfiles for macOS and Linux. There is no build system, linter, or test
 - `scripts/linux/<module>.sh` — Linux-only modules (`packages`, `android-sdk`, `defaults`).
 - `Brewfile` — curated Homebrew/mas package list used by `scripts/macos/packages.sh`.
 - `zsh/`, `git/`, `config/` — config files symlinked into `$HOME` by the modules.
+- `tests/docker-install-test.sh <image>` — end-to-end install test in a fresh container (create user, login, clone, install, assert, cleanup); used by `.github/workflows/docker-tests.yml` on `ubuntu:24.04` and `fedora:latest`.
 
 ## Conventions
 
@@ -25,6 +26,7 @@ Personal dotfiles for macOS and Linux. There is no build system, linter, or test
 
 ## Verification
 
-- `bash -n install.sh scripts/lib.sh scripts/common/*.sh scripts/macos/*.sh scripts/linux/*.sh` — syntax check after edits.
-- `zsh -n zsh/.zshrc zsh/.zprofile zsh/.zshenv` — syntax check after edits.
+- `bash -n` takes one script; check each file individually: `for f in install.sh scripts/lib.sh scripts/common/*.sh scripts/macos/*.sh scripts/linux/*.sh tests/*.sh; do bash -n "$f" || exit 1; done` — syntax check after edits.
+- `for f in zsh/.zshrc zsh/.zprofile zsh/.zshenv; do zsh -n "$f" || exit 1; done` — syntax check after edits.
 - `DOTFILES_DRY_RUN=1 ./install.sh` — verify module resolution for the current OS without side effects.
+- `./tests/docker-install-test.sh ubuntu:24.04` (and optionally `fedora:latest`, `SKIP_ANDROID=1` for a quick run) — full install verification in Docker.

@@ -41,8 +41,13 @@ MODULES=(
 )
 
 # Pull only when the working tree is clean. Local edits are treated as user
-# work and are never overwritten by the installer.
+# work and are never overwritten by the installer. Skipped entirely in dry-run
+# mode so a dry run has no side effects.
 auto_pull() {
+  if [[ -n "${DOTFILES_DRY_RUN:-}" ]]; then
+    return 0
+  fi
+
   if ! git -C "$DOTFILES_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     say "ℹ️  Not a Git repo, skipping auto-pull."
     return 0
@@ -59,7 +64,9 @@ auto_pull() {
   fi
 
   say "⬇️  Pulling latest dotfiles..."
-  git -C "$DOTFILES_DIR" pull --ff-only
+  if ! git -C "$DOTFILES_DIR" pull --ff-only; then
+    say "⚠️  Cannot fast-forward, skipping auto-pull."
+  fi
 }
 
 module_script() {
@@ -84,6 +91,12 @@ auto_pull
 say ""
 
 for module in "${MODULES[@]}"; do
+  if [[ " ${DOTFILES_SKIP_MODULES:-} " == *" $module "* ]]; then
+    say "⏭️  Skipping $module (DOTFILES_SKIP_MODULES)."
+    say ""
+    continue
+  fi
+
   if ! script="$(module_script "$module")"; then
     say "⏭️  Skipping $module (not available for $OS)."
     say ""

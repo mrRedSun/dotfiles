@@ -45,13 +45,23 @@ To preview the module plan for the current OS without touching anything:
 DOTFILES_DRY_RUN=1 ./install.sh
 ```
 
+Individual modules can be excluded with a space-separated `DOTFILES_SKIP_MODULES` list (e.g. `DOTFILES_SKIP_MODULES="android-sdk" ./install.sh`).
+
+## Testing
+
+The installer is verified end-to-end in Docker on every push (see `.github/workflows/docker-tests.yml`) on `ubuntu:24.04` and `fedora:latest`: each run spawns a fresh container, creates a user with a password, logs in as that user, clones the repo, runs the full install (including the Android SDK), asserts the results and idempotent re-runs, then deletes the container. Run it locally with:
+
+```sh
+SKIP_ANDROID=1 ./tests/docker-install-test.sh ubuntu:24.04
+```
+
 On macOS it also applies a few `defaults` tweaks: disables press-and-hold accent picking for Vim-style key repeat, disables natural scrolling, sets trackpad/mouse speed, keeps force click and right click enabled, disables smart typography substitutions, reduces window motion, prevents Spaces from switching automatically when activating apps, disables separate Spaces per display, puts the Dock on the right, enables Dock autohide, removes Dock show/hide animation delay, hides recent Dock apps, adds Downloads and Desktop stacks to the Dock, shows hidden files in Finder, and enables the Finder status bar. The separate-Spaces setting may require logging out and back in.
 
 ## Homebrew
 
 The `Brewfile` is installed by `scripts/macos/packages.sh` and is intentionally curated from the current machine. It does not include every installed transitive library, generated package, VS Code extension, or one-off app.
 
-On Linux, `scripts/linux/packages.sh` mirrors the CLI/core sections of the Brewfile with apt packages; optional packages are installed only when the distro repositories carry them.
+On Linux, `scripts/linux/packages.sh` mirrors most of the CLI/core sections of the Brewfile with apt (Debian/Ubuntu) or dnf (Fedora) packages; optional packages are installed only when the distro repositories carry them, and unavailable ones are skipped with a notice.
 
 ## Mackup
 

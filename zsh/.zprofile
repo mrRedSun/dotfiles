@@ -22,8 +22,9 @@ else
     export ANDROID_SDK_ROOT="$ANDROID_HOME"
 fi
 
-# macOS-only paths first so shared paths keep out-ranking Homebrew, matching
-# the original macOS-only profile.
+# macOS-only paths first. ~/.local/bin, fvm, pyenv, bun and friends keep
+# out-ranking Homebrew, as in the original macOS-only profile; /usr/local/bin
+# and ~/.redscripts moved with them for a single shared block.
 if [[ "$(uname -s)" == "Darwin" ]]; then
     export PATH="/opt/homebrew/bin:$PATH"
     export PATH="/opt/homebrew/sbin:$PATH"

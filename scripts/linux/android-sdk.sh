@@ -59,8 +59,12 @@ install_cmdline_tools() {
 
   say "⬇️  Bootstrapping Android cmdline-tools..."
   tmp_dir="$(mktemp -d)"
-  curl -fsSL "$CMDLINE_TOOLS_URL" -o "$tmp_dir/cmdline-tools.zip"
-  unzip -q "$tmp_dir/cmdline-tools.zip" -d "$tmp_dir"
+  if ! curl -fsSL "$CMDLINE_TOOLS_URL" -o "$tmp_dir/cmdline-tools.zip" ||
+    ! unzip -q "$tmp_dir/cmdline-tools.zip" -d "$tmp_dir"; then
+    rm -rf "$tmp_dir"
+    say "❌ Failed to download/extract Android cmdline-tools." >&2
+    return 1
+  fi
   mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
   rm -rf "$ANDROID_SDK_ROOT/cmdline-tools/bootstrap"
   mv "$tmp_dir/cmdline-tools" "$ANDROID_SDK_ROOT/cmdline-tools/bootstrap"
@@ -89,7 +93,7 @@ fi
 
 avdmanager_bin="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager"
 
-if ! "$avdmanager_bin" list avd | grep -Fq "Name: $ANDROID_AVD_NAME"; then
+if ! "$avdmanager_bin" list avd | grep -Eq "^[[:space:]]*Name: ${ANDROID_AVD_NAME}$"; then
   say "📱 Creating Android emulator: $ANDROID_AVD_NAME"
   echo "no" | "$avdmanager_bin" create avd --name "$ANDROID_AVD_NAME" --package "$ANDROID_AVD_PACKAGE" --device "$ANDROID_AVD_DEVICE"
 fi
