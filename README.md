@@ -90,7 +90,7 @@ Destinations that are not already the expected symlink are moved into `~/.dotfil
 
 Most skills in `skills/` come from two public collections, some copied as-is and some lightly adapted:
 
-- From [Matt Pocock](https://github.com/mattpocock)'s [mattpocock/skills](https://github.com/mattpocock/skills): `diagnosing-bugs`, `grilling`, `grill-me`, `handoff`, `resolving-merge-conflicts`, `wait-what`, `writing-for-agents`
+- From [Matt Pocock](https://github.com/mattpocock)'s [mattpocock/skills](https://github.com/mattpocock/skills): `diagnosing-bugs`, `grilling`, `handoff`, `resolving-merge-conflicts`, `writing-for-agents`
 - From [Michael Ramos](https://github.com/backnotprop)'s [backnotprop/pstack](https://github.com/backnotprop/pstack), which also ships in [cursor/plugins](https://github.com/cursor/plugins): `architect`, `arena`, `blast-radius`, `bro`, `how`, `interrogate`, `show-me-your-work`, `swarm`, `tdd`, `teach`, `technical-writing`, `unslop`, `why`
 
 Credit for those skills belongs to their authors, and the upstream repos carry the canonical versions.
