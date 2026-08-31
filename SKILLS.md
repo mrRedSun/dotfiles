@@ -7,9 +7,8 @@ These are the reusable, project-independent skills included in this repository.
 | `architect` | Design types, signatures, and module boundaries before implementation. |
 | `arena` | Generate parallel solutions, select a base, and merge the strongest parts. |
 | `blast-radius` | Find what a change could break outside the diff and verify its key safety assumption. |
-| `bro` | Restate the previous response in plain language. |
+| `bro` | Re-pitch the previous response with enough context and plain language. |
 | `diagnosing-bugs` | Reproduce, narrow, instrument, fix, and verify difficult bugs. |
-| `grill-me` | Start an interview that sharpens a plan or design. |
 | `grilling` | Stress-test a plan through focused rounds of questions. |
 | `handoff` | Turn the current work into a continuation document for another agent. |
 | `how` | Explain runtime flow, ownership, and architecture in an unfamiliar codebase. |
@@ -21,7 +20,6 @@ These are the reusable, project-independent skills included in this repository.
 | `teach` | Combine how and why into one clear explanation. |
 | `technical-writing` | Write and review concise, structured technical documentation. |
 | `unslop` | Remove AI writing patterns, filler, and unnatural phrasing. |
-| `wait-what` | Re-explain the previous response with more context and simpler language. |
 | `why` | Investigate the historical reason for code or design decisions using available evidence. |
 | `writing-for-agents` | Write skills and other agent-facing instructions, including `AGENTS.md` and `CLAUDE.md`. |
 
