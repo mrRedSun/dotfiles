@@ -61,4 +61,9 @@ link_file "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 link_file "$DOTFILES_DIR/zsh/.zprofile" "$HOME/.zprofile"
 link_file "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv"
 
+if [[ ! -e "$HOME/.zshrc.local" ]]; then
+  touch "$HOME/.zshrc.local"
+  say "📝 Created ~/.zshrc.local for machine-local overrides."
+fi
+
 say "✅ Shell configured."

@@ -234,6 +234,10 @@ automatically-unhide-macos-hidden-apps = true
     if.app-id = 'com.DanPristupov.Fork'
     run = ['move-node-to-workspace 3']
 
+[[on-window-detected]]
+    if.app-id = 'com.microsoft.VSCodeInsiders'
+    run = ['move-node-to-workspace E']
+
 # Email
 [[on-window-detected]]
     if.app-id = 'com.microsoft.Outlook'
@@ -272,6 +276,9 @@ automatically-unhide-macos-hidden-apps = true
 [[on-window-detected]]
     if.app-id = 'com.megacrit.SlayTheSpire2'
     run = ['move-node-to-workspace G']
+[[on-window-detected]]
+    if.app-id = 'com.valvesoftware.steam'
+    run = ['move-node-to-workspace G']
 
 # Remote Desktop
 [[on-window-detected]]
@@ -280,7 +287,6 @@ automatically-unhide-macos-hidden-apps = true
 [[on-window-detected]]
     if.app-id = 'com.nomachine.nxdock'
     run = ['move-node-to-workspace R']
-
 # Music
 [[on-window-detected]]
     if.app-id = 'com.github.th-ch.youtube-music'

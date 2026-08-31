@@ -115,7 +115,7 @@ Edit the files in this repo, then open a new shell or reload Zsh:
 source ~/.zshrc
 ```
 
-Keep machine-specific or private settings in files that are not committed. `.zshrc` sources `~/.zshrc.local`, and `.gitconfig` includes `~/.gitconfig.local`.
+Keep machine-specific or private settings in local override files that are not committed. The installer creates empty `~/.zshrc.local` and `~/.gitconfig.local` files when they do not already exist; `.zshrc` sources the former and `.gitconfig` includes the latter. Existing override files are left untouched on subsequent runs.
 
 ## Before you publish
 
