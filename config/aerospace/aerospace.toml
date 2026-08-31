@@ -1,9 +1,4 @@
-after-login-command = []
-
 config-version = 2
-exec-on-workspace-change = ['/bin/bash', '-c',]
-
-after-startup-command = []
 
 # Start AeroSpace at login
 start-at-login = true
@@ -283,7 +278,7 @@ automatically-unhide-macos-hidden-apps = true
     run = ['move-node-to-workspace G']
 [[on-window-detected]]
     if.app-id = 'com.valvesoftware.steam'
-    run = ['move-node-to-workspace R']
+    run = ['move-node-to-workspace G']
 
 # Remote Desktop
 [[on-window-detected]]
