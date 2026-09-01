@@ -1,0 +1,5 @@
+interface:
+  display_name: "TDD"
+  short_description: "Write the regression test before the fix"
+policy:
+  allow_implicit_invocation: false

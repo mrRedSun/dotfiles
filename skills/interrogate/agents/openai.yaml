@@ -1,0 +1,5 @@
+interface:
+  display_name: "Interrogate"
+  short_description: "Run an adversarial multi-model review"
+policy:
+  allow_implicit_invocation: false
