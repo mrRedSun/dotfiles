@@ -8,6 +8,7 @@ These are the reusable, project-independent skills included in this repository.
 | `arena` | Generate parallel solutions, select a base, and merge the strongest parts. |
 | `blast-radius` | Find what a change could break outside the diff and verify its key safety assumption. |
 | `bro` | Re-pitch the previous response with enough context and plain language. |
+| `code-review` | Review a diff against documented coding standards and the originating spec with parallel sub-agents. |
 | `diagnosing-bugs` | Reproduce, narrow, instrument, fix, and verify difficult bugs. |
 | `grilling` | Stress-test a plan through focused rounds of questions. |
 | `handoff` | Turn the current work into a continuation document for another agent. |
