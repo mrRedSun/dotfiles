@@ -1,0 +1,5 @@
+interface:
+  display_name: "Architect"
+  short_description: "Design structure before implementation"
+policy:
+  allow_implicit_invocation: false

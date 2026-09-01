@@ -1,0 +1,5 @@
+interface:
+  display_name: "Swarm"
+  short_description: "Fan out workers and combine results"
+policy:
+  allow_implicit_invocation: false
