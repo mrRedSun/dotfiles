@@ -24,6 +24,10 @@ Personal dotfiles for macOS and Linux. There is no build system, linter, or test
 - Prefer `config/mackup.cfg` copy mode for app preferences; never Mackup link mode.
 - Shell configs are shared across OSes; guard macOS-only paths with `if [[ "$(uname -s)" == "Darwin" ]]` instead of forking config files.
 
+## Workflow
+
+- Deliver every requested change as a PR: do the work on a branch, push, open a PR describing the result, then ask the user if it can be merged immediately. Merge once they approve.
+
 ## Verification
 
 - `bash -n` takes one script; check each file individually: `for f in install.sh scripts/lib.sh scripts/common/*.sh scripts/macos/*.sh scripts/linux/*.sh tests/*.sh; do bash -n "$f" || exit 1; done` — syntax check after edits.
