@@ -13,6 +13,7 @@ These are the reusable, project-independent skills included in this repository.
 | `grilling` | Stress-test a plan through focused rounds of questions. |
 | `handoff` | Turn the current work into a continuation document for another agent. |
 | `how` | Explain runtime flow, ownership, and architecture in an unfamiliar codebase. |
+| `i-have-adhd` | ADHD-friendly output: action first, numbered steps, visible wins, no preamble. Always applies. |
 | `interrogate` | Run independent adversarial reviews and synthesize their findings. |
 | `resolving-merge-conflicts` | Resolve Git merge or rebase conflicts while preserving intent. |
 | `show-me-your-work` | Keep a decision log for long-running or unattended work. |
