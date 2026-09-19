@@ -14,8 +14,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # fedora:latest was dropped: its rolling base image kept drifting
+          # (container-only systemd conflicts) for a distro the installer
+          # rarely targets. Run tests/docker-install-test.sh fedora:latest
+          # manually if that changes.
           - image: "ubuntu:24.04"
-          - image: "fedora:latest"
     name: install (${{ matrix.image }})
     steps:
       - uses: actions/checkout@v4
