@@ -11,7 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../lib.sh"
 
 SKILLS_DIR="$DOTFILES_DIR/skills"
-AGENT_RULES="$DOTFILES_DIR/config/agents.md"
+AGENT_RULES="$DOTFILES_DIR/config/AGENTS.md"
 
 SKILL_TARGET_DIRS=(
   "$HOME/.claude/skills"
