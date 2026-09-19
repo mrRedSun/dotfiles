@@ -126,6 +126,8 @@ check "zsh-autosuggestions plugin" exec_user '[[ -d ~/.oh-my-zsh/custom/plugins/
 check "zsh-syntax-highlighting plugin" exec_user '[[ -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]]'
 check "AI skills linked for Claude Code" exec_user '[[ -L ~/.claude/skills/why ]]'
 check "AI skills linked for Codex/OpenCode" exec_user '[[ -L ~/.agents/skills/why ]]'
+check "Claude instructions linked" exec_user '[[ -L ~/.claude/CLAUDE.md && "$(readlink ~/.claude/CLAUDE.md)" == "$HOME/Projects/dotfiles/config/agents.md" ]]'
+check "Codex instructions linked" exec_user '[[ -L ~/.codex/AGENTS.md && "$(readlink ~/.codex/AGENTS.md)" == "$HOME/Projects/dotfiles/config/agents.md" ]]'
 check "zsh login shell loads .zprofile (ANDROID_HOME)" exec_login '[[ -n "$ANDROID_HOME" ]]'
 check "git works" exec_user 'git --version'
 

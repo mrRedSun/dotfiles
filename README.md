@@ -73,6 +73,8 @@ Use Mackup copy or restore mode for macOS app preferences. Mackup link mode brea
 
 ## AI skills
 
+Edit [`config/agents.md`](config/agents.md) for the shared coding instructions. The `ai-skills` module links it to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`. Existing files at those paths are backed up before linking. These files provide agent instructions; they do not replace a tool's system prompt.
+
 Agent skills live in `skills/<skill-name>/SKILL.md`. See [SKILLS.md](SKILLS.md) for a catalog. The installer links each skill directory individually, so unmanaged skills stay alongside the repo-managed set:
 
 - `~/.claude/skills/<skill-name>` for Claude Code
@@ -84,7 +86,7 @@ To run only the skill-linking step:
 ./scripts/common/ai-skills.sh
 ```
 
-Destinations that are not already the expected symlink are moved into `~/.dotfiles-backup/<timestamp>/ai-skills/` first.
+Existing skill destinations that are not already the expected symlink are moved into `~/.dotfiles-backup/<timestamp>/ai-skills/` first. Existing instruction files are moved into `~/.dotfiles-backup/<timestamp>/`.
 
 ### Skill attribution
 
