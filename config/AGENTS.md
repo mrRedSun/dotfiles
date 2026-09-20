@@ -21,3 +21,15 @@ Apply these rules alongside relevant project-specific instructions.
 - For a bug fix, rerun the reproduction and verify the original failure is gone.
 - Review the final diff: every changed file and behavior must serve the task.
 - Run the relevant checks against the success criteria. Report what passed, failed, or could not run, and identify any criteria still unverified.
+
+## Attribution
+
+- Name branches for the change they contain.
+- Commit with the human contributor's Git identity. Credit only human contributors in authorship and credit fields.
+- Keep AI tool names out of branch names, commit messages, PR text, and contributor lists. Omit AI co-author trailers.
+
+## When user input is required
+
+- Ask for the missing input and pause the work that depends on it. Continue only independent work within the authorized scope.
+- Use computer automation to work around missing input only when explicitly requested, with a bounded effort.
+- Never search the home directory for credentials to obtain authorization. Ask the user to provide the required access through the intended authorization flow.
