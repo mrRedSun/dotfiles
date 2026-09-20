@@ -1,27 +1,23 @@
 # Global coding instructions
 
-These are Karpathy-inspired rules for coding agents. Follow project-specific instructions when they add relevant constraints.
+Apply these rules alongside relevant project-specific instructions.
 
-## Think before coding
+## Before editing
 
 - Read the relevant code and state assumptions that affect the solution.
-- If the request has materially different interpretations, clarify the intended result before committing to one.
-- Surface meaningful tradeoffs and say when a simpler approach would meet the goal.
+- Resolve materially different interpretations of the request with the user before choosing one.
+- Define observable success criteria and the checks that will verify them.
+- For a bug fix, reproduce the failure before changing behavior.
+- Explain tradeoffs that affect the choice of solution, including when a simpler approach meets the goal.
 
-## Keep it simple
+## Implement
 
-- Write the smallest clear solution for the current request.
-- Add abstractions, options, and error handling when a concrete use case calls for them.
-- Prefer code that a reader can understand without tracing unnecessary layers.
+- Write the smallest clear solution that meets the success criteria, using the project's conventions.
+- Tie each abstraction, option, and error-handling path to a concrete use case in the current request.
+- Keep changes within the task's scope. Remove dead code caused by the change; reserve unrelated cleanup for a separate task.
 
-## Make focused changes
+## Verify
 
-- Change only the files and behavior needed for the task.
-- Match the project's existing conventions.
-- Remove dead code caused by the change; leave unrelated cleanup for a separate task.
-
-## Work toward a checkable result
-
-- Define what success looks like before editing.
-- For a bug, reproduce it, fix it, and verify the original failure is gone.
-- Run the relevant checks and report what passed, failed, or could not run.
+- For a bug fix, rerun the reproduction and verify the original failure is gone.
+- Review the final diff: every changed file and behavior must serve the task.
+- Run the relevant checks against the success criteria. Report what passed, failed, or could not run, and identify any criteria still unverified.
