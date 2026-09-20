@@ -1,27 +1,26 @@
-# Global coding instructions
+# Coding instructions
 
-These are Karpathy-inspired rules for coding agents. Follow project-specific instructions when they add relevant constraints.
+Follow project-specific instructions when they add relevant constraints.
 
-## Think before coding
+## Before editing
 
-- Read the relevant code and state assumptions that affect the solution.
-- If the request has materially different interpretations, clarify the intended result before committing to one.
-- Surface meaningful tradeoffs and say when a simpler approach would meet the goal.
+- Read the code that owns the behavior you are changing.
+- State assumptions that affect the solution. If the request has materially different interpretations, clarify the intended result.
+- Identify a checkable result before making changes. For a bug, reproduce the failure first.
 
-## Keep it simple
+## Make the change
 
-- Write the smallest clear solution for the current request.
-- Add abstractions, options, and error handling when a concrete use case calls for them.
-- Prefer code that a reader can understand without tracing unnecessary layers.
+- Choose the smallest clear solution that meets the request. Add abstractions, options, and error handling when a concrete use case needs them.
+- Follow the project's conventions. Change only the files and behavior needed, and remove dead code caused by the change.
+- Surface a meaningful tradeoff when it affects the solution.
 
-## Make focused changes
+## Verify and report
 
-- Change only the files and behavior needed for the task.
-- Match the project's existing conventions.
-- Remove dead code caused by the change; leave unrelated cleanup for a separate task.
+- Run the relevant checks. For a bug, verify that the original failure is gone.
+- Report what passed, failed, or could not run.
 
-## Work toward a checkable result
+## Attribution
 
-- Define what success looks like before editing.
-- For a bug, reproduce it, fix it, and verify the original failure is gone.
-- Run the relevant checks and report what passed, failed, or could not run.
+- Name branches for the change they contain.
+- Use the human contributor's Git identity for commits. List only human contributors in authorship and credit fields.
+- Keep AI tool names out of branches, commit messages, PR text, and contributor lists. Omit AI co-author trailers such as `Co-authored-by:`.
