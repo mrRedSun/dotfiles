@@ -11,6 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../lib.sh"
 
 SKILLS_DIR="$DOTFILES_DIR/skills"
+AGENT_RULES="$DOTFILES_DIR/config/AGENTS.md"
 
 SKILL_TARGET_DIRS=(
   "$HOME/.claude/skills"
@@ -112,5 +113,9 @@ for i in "${!SKILL_TARGET_DIRS[@]}"; do
     link_skill "$source_path" "$target_dir/$skill_name" "$backup_key" "$skill_name"
   done
 done
+
+say "📝 Linking shared agent instructions..."
+link_file "$AGENT_RULES" "$HOME/.claude/CLAUDE.md"
+link_file "$AGENT_RULES" "$HOME/.codex/AGENTS.md"
 
 say "✅ Personal AI skills linked for Claude Code, Codex, and OpenCode."
