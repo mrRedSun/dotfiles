@@ -1,4 +1,5 @@
 # Interactive shell configuration
+[[ ! -o login ]] && source "$HOME/.zprofile"
 ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 
 ZSH_THEME="mira" # set by `omz`
