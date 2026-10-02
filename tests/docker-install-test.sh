@@ -129,6 +129,8 @@ check "AI skills linked for Codex/OpenCode" exec_user '[[ -L ~/.agents/skills/wh
 check "Claude instructions linked" exec_user '[[ -L ~/.claude/CLAUDE.md && "$(readlink ~/.claude/CLAUDE.md)" == "$HOME/Projects/dotfiles/config/AGENTS.md" ]]'
 check "Codex instructions linked" exec_user '[[ -L ~/.codex/AGENTS.md && "$(readlink ~/.codex/AGENTS.md)" == "$HOME/Projects/dotfiles/config/AGENTS.md" ]]'
 check "zsh login shell loads .zprofile (ANDROID_HOME)" exec_login '[[ -n "$ANDROID_HOME" ]]'
+check "non-login zsh loads tool paths and Oh My Zsh" exec_user 'env -i HOME="$HOME" USER="$USER" TERM=xterm-256color PATH=/usr/bin:/bin zsh -ic '\''[[ "$ANDROID_HOME" == "$HOME/Android/Sdk" && "$ZSH" == "$HOME/.oh-my-zsh" && ":$PATH:" == *":$HOME/fvm/bin:"* && ":$PATH:" == *":$HOME/.local/bin:"* ]] && whence -w omz'\'''
+check "Neovim meets LazyVim minimum version" exec_login 'nvim --clean --headless '\''+lua if vim.fn.has("nvim-0.11.2") == 0 then os.exit(1) end'\'' +qa'
 check "git works" exec_user 'git --version'
 
 if [[ "${SKIP_ANDROID:-0}" != "1" ]]; then

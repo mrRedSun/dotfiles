@@ -45,6 +45,8 @@ On macOS, the modules install Homebrew and the `Brewfile`, the Android SDK with 
 
 On Linux, the modules install the apt or dnf package equivalents, the Android SDK command-line tools with an x86_64 emulator, the same shared symlinks and skills, and a few GNOME tweaks.
 
+If the Linux Neovim package is older than LazyVim's minimum version of 0.11.2, the tools module installs a checksum-verified Neovim v0.12.5 release in `~/.local/opt` and links it into `~/.local/bin`. Both login and non-login interactive Zsh shells load the shared environment, including `~/fvm/bin` for standalone FVM installations.
+
 ### What the defaults module changes on macOS
 
 `scripts/macos/defaults.sh` applies these `defaults` tweaks:
