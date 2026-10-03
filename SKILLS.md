@@ -23,7 +23,7 @@ These are the reusable, project-independent skills included in this repository.
 | `technical-writing` | Write and review concise, structured technical documentation. |
 | `unslop` | Remove AI writing patterns, filler, and unnatural phrasing. |
 | `why` | Investigate the historical reason for code or design decisions using available evidence. |
-| `writing-for-agents` | Write skills and other agent-facing instructions, including `AGENTS.md` and `CLAUDE.md`. |
+| `writing-for-agents` | Write skills and other agent-facing instructions, including `AGENTS.md`. |
 
 ## Using the Skills
 
