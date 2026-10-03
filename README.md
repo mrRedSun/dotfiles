@@ -75,7 +75,9 @@ Use Mackup copy or restore mode for macOS app preferences. Mackup link mode brea
 
 ## AI skills
 
-Edit [`config/AGENTS.md`](config/AGENTS.md) for the shared coding instructions. The `ai-skills` module links it to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`. Existing files at those paths are backed up before linking. These files provide agent instructions; they do not replace a tool's system prompt.
+Edit [`config/AGENTS.md`](config/AGENTS.md) for the shared coding instructions. The `ai-skills` module links it to `~/.claude/AGENTS.md` and `~/.codex/AGENTS.md`. Existing files at those paths are backed up before linking. These files provide agent instructions; they do not replace a tool's system prompt.
+
+Claude Code v2.1.277 and later can [load `AGENTS.md` directly](https://code.claude.com/docs/en/memory#agentsmd). It discovers `~/.claude/AGENTS.md` through the home directory when a project is under `$HOME`. By default, project or ancestor `CLAUDE.md` and `CLAUDE.local.md` files take precedence over `AGENTS.md`. The installer backs up the old `~/.claude/CLAUDE.md` symlink only if it points to this repo's `config/AGENTS.md`; custom files and links stay in place.
 
 Agent skills live in `skills/<skill-name>/SKILL.md`. See [SKILLS.md](SKILLS.md) for a catalog. The installer links each skill directory individually, so unmanaged skills stay alongside the repo-managed set:
 
