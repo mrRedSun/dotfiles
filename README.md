@@ -92,6 +92,34 @@ To run only the skill-linking step:
 
 Existing skill destinations that are not already the expected symlink are moved into `~/.dotfiles-backup/<timestamp>/ai-skills/` first. Existing instruction files are moved into `~/.dotfiles-backup/<timestamp>/`.
 
+### Claude Desktop through CLIProxy
+
+On macOS, prepare a Claude Desktop gateway preset with:
+
+```sh
+./scripts/macos/claude-desktop-proxy.sh
+```
+
+This opt-in script enables the Developer menu and adds a `CLIProxy` preset for
+`https://agents-api.lviv.win` with bearer authentication. It preserves other
+presets and the currently applied configuration, backs up changed files under
+`~/.dotfiles-backup/`, and does not read or change Claude Code CLI credentials.
+It is not part of the automatic installer.
+
+1. Fully quit and reopen Claude Desktop.
+2. Open **Developer > Configure Third-Party Inference** and select **CLIProxy**.
+3. Enter your token in **Gateway API key**. Keep **Gateway auth scheme** set to **Bearer**.
+4. Click **Apply Changes**, then **Save & Restart**, and start a local Code session.
+
+The token stays in Claude's local configuration. Do not commit it to this repo.
+The preset is stored in `~/Library/Application Support/Claude-3p/configLibrary/`.
+Claude Desktop uses its own [third-party inference configuration](https://code.claude.com/docs/en/llm-gateway-connect#desktop-app),
+so setting `ANTHROPIC_BASE_URL` in `~/.claude/settings.json` alone does not route
+Desktop sessions. Gateway mode supports local sessions; SSH, Anthropic-hosted
+cloud environments, and Remote Control are unavailable. The gateway must serve
+`POST /v1/messages`; model discovery uses `GET /v1/models`, or you can configure
+an explicit list of full Claude model IDs in the preset.
+
 ### Skill attribution
 
 Most skills in `skills/` come from two public collections, some copied as-is and some lightly adapted:
