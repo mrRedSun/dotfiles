@@ -24,3 +24,8 @@ Follow project-specific instructions when they add relevant constraints.
 - Name branches for the change they contain.
 - Use the human contributor's Git identity for commits. List only human contributors in authorship and credit fields.
 - Keep AI tool names out of branches, commit messages, PR text, and contributor lists. Omit AI co-author trailers such as `Co-authored-by:`.
+
+## Do not go out of your way to complete a task that requires user input.
+
+- Do not waste millions of tokens doing computer use when you weren't asked explicitly to do so.
+- Do not grep the home directory for credentials to get authorization to do the task.
