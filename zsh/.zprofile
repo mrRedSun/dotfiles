@@ -51,6 +51,7 @@ export PATH="$ANDROID_HOME/platform-tools:$PATH"
 export PATH="$ANDROID_HOME/emulator:$PATH"
 
 export PATH="$HOME/fvm/default/bin:$PATH"
+export PATH="$HOME/fvm/bin:$PATH"
 export PATH="$HOME/.pub-cache/bin:$PATH"
 export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 

@@ -45,6 +45,8 @@ On macOS, the modules install Homebrew and the `Brewfile`, the Android SDK with 
 
 On Linux, the modules install the apt or dnf package equivalents, the Android SDK command-line tools with an x86_64 emulator, the same shared symlinks and skills, and a few GNOME tweaks.
 
+If the Linux Neovim package is older than LazyVim's minimum version of 0.11.2, the tools module installs a checksum-verified Neovim v0.12.5 release in `~/.local/opt` and links it into `~/.local/bin`. Both login and non-login interactive Zsh shells load the shared environment, including `~/fvm/bin` for standalone FVM installations.
+
 ### What the defaults module changes on macOS
 
 `scripts/macos/defaults.sh` applies these `defaults` tweaks:
@@ -73,7 +75,9 @@ Use Mackup copy or restore mode for macOS app preferences. Mackup link mode brea
 
 ## AI skills
 
-Edit [`config/AGENTS.md`](config/AGENTS.md) for the shared coding instructions. The `ai-skills` module links it to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`. Existing files at those paths are backed up before linking. These files provide agent instructions; they do not replace a tool's system prompt.
+Edit [`config/AGENTS.md`](config/AGENTS.md) for the shared coding instructions. The `ai-skills` module links it to `~/.claude/AGENTS.md` and `~/.codex/AGENTS.md`. Existing files at those paths are backed up before linking. These files provide agent instructions; they do not replace a tool's system prompt.
+
+Claude Code v2.1.277 and later can [load `AGENTS.md` directly](https://code.claude.com/docs/en/memory#agentsmd). It discovers `~/.claude/AGENTS.md` through the home directory when a project is under `$HOME`. By default, project or ancestor `CLAUDE.md` and `CLAUDE.local.md` files take precedence over `AGENTS.md`. The installer backs up the old `~/.claude/CLAUDE.md` symlink only if it points to this repo's `config/AGENTS.md`; custom files and links stay in place.
 
 Agent skills live in `skills/<skill-name>/SKILL.md`. See [SKILLS.md](SKILLS.md) for a catalog. The installer links each skill directory individually, so unmanaged skills stay alongside the repo-managed set:
 

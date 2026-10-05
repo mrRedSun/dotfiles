@@ -1,31 +1,35 @@
-# Coding instructions
+# Global coding instructions
 
-Follow project-specific instructions when they add relevant constraints.
+Apply these rules alongside relevant project-specific instructions.
 
 ## Before editing
 
-- Read the code that owns the behavior you are changing.
-- State assumptions that affect the solution. If the request has materially different interpretations, clarify the intended result.
-- Identify a checkable result before making changes. For a bug, reproduce the failure first.
+- Read the relevant code and state assumptions that affect the solution.
+- Resolve materially different interpretations of the request with the user before choosing one.
+- Define observable success criteria and the checks that will verify them.
+- For a bug fix, reproduce the failure before changing behavior.
+- Explain tradeoffs that affect the choice of solution, including when a simpler approach meets the goal.
 
-## Make the change
+## Implement
 
-- Choose the smallest clear solution that meets the request. Add abstractions, options, and error handling when a concrete use case needs them.
-- Follow the project's conventions. Change only the files and behavior needed, and remove dead code caused by the change.
-- Surface a meaningful tradeoff when it affects the solution.
+- Write the smallest clear solution that meets the success criteria, using the project's conventions.
+- Tie each abstraction, option, and error-handling path to a concrete use case in the current request.
+- Keep changes within the task's scope. Remove dead code caused by the change; reserve unrelated cleanup for a separate task.
 
-## Verify and report
+## Verify
 
-- Run the relevant checks. For a bug, verify that the original failure is gone.
-- Report what passed, failed, or could not run.
+- For a bug fix, rerun the reproduction and verify the original failure is gone.
+- Review the final diff: every changed file and behavior must serve the task.
+- Run the relevant checks against the success criteria. Report what passed, failed, or could not run, and identify any criteria still unverified.
 
 ## Attribution
 
 - Name branches for the change they contain.
-- Use the human contributor's Git identity for commits. List only human contributors in authorship and credit fields.
-- Keep AI tool names out of branches, commit messages, PR text, and contributor lists. Omit AI co-author trailers such as `Co-authored-by:`.
+- Commit with the human contributor's Git identity. Credit only human contributors in authorship and credit fields.
+- Keep AI tool names out of branch names, commit messages, PR text, and contributor lists. Omit AI co-author trailers.
 
-## Do not go out of your way to complete a task that requires user input.
+## When user input is required
 
-- Do not waste millions of tokens doing computer use when you weren't asked explicitly to do so.
-- Do not grep the home directory for credentials to get authorization to do the task.
+- Ask for the missing input and pause the work that depends on it. Continue only independent work within the authorized scope.
+- Use computer automation to work around missing input only when explicitly requested, with a bounded effort.
+- Never search the home directory for credentials to obtain authorization. Ask the user to provide the required access through the intended authorization flow.

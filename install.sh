@@ -36,6 +36,7 @@ MODULES=(
   "tools"
   "preferences"
   "ai-skills"
+  "t3code"
   "defaults"
 )
 

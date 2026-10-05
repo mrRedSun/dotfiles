@@ -115,7 +115,13 @@ for i in "${!SKILL_TARGET_DIRS[@]}"; do
 done
 
 say "📝 Linking shared agent instructions..."
-link_file "$AGENT_RULES" "$HOME/.claude/CLAUDE.md"
+link_file "$AGENT_RULES" "$HOME/.claude/AGENTS.md"
 link_file "$AGENT_RULES" "$HOME/.codex/AGENTS.md"
+
+# Retire only the instruction link installed by earlier versions of this module.
+legacy_rules="$HOME/.claude/CLAUDE.md"
+if [[ -L "$legacy_rules" ]] && [[ "$(readlink "$legacy_rules")" == "$AGENT_RULES" ]]; then
+  backup_target "$legacy_rules" "claude" "CLAUDE.md"
+fi
 
 say "✅ Personal AI skills linked for Claude Code, Codex, and OpenCode."
