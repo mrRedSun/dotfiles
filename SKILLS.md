@@ -10,6 +10,9 @@ These are the reusable, project-independent skills included in this repository.
 | `bro` | Re-pitch the previous response with enough context and plain language. |
 | `code-review` | Review a diff against documented coding standards and the originating spec with parallel sub-agents. |
 | `diagnosing-bugs` | Reproduce, narrow, instrument, fix, and verify difficult bugs. |
+| `domain-modeling` | Challenge terminology, keep `GLOSSARY.md` current, and record hard-to-reverse decisions as ADRs. |
+| `grill-me` | Manually start a grilling session (`/grill-me`). |
+| `grill-with-docs` | Grill a design while recording terms in `GLOSSARY.md` and decisions in ADRs (`/grill-with-docs`). |
 | `grilling` | Stress-test a plan through focused rounds of questions. |
 | `handoff` | Turn the current work into a continuation document for another agent. |
 | `how` | Explain runtime flow, ownership, and architecture in an unfamiliar codebase. |

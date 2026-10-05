@@ -33,3 +33,8 @@ Apply these rules alongside relevant project-specific instructions.
 - Ask for the missing input and pause the work that depends on it. Continue only independent work within the authorized scope.
 - Use computer automation to work around missing input only when explicitly requested, with a bounded effort.
 - Never search the home directory for credentials to obtain authorization. Ask the user to provide the required access through the intended authorization flow.
+
+## Domain docs
+
+- Before exploring a repo, read its `GLOSSARY.md` (or `GLOSSARY-MAP.md` and the glossaries it points to) and the ADRs under `docs/adr/` that touch the area you are working in. If none exist, proceed without mentioning it.
+- Name domain concepts in code, issues, and proposals with the glossary's terms. When your output contradicts an ADR, say so explicitly.
