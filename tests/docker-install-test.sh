@@ -132,6 +132,7 @@ check "Codex instructions linked" exec_user '[[ -L ~/.codex/AGENTS.md && "$(read
 check "zsh login shell loads .zprofile (ANDROID_HOME)" exec_login '[[ -n "$ANDROID_HOME" ]]'
 check "non-login zsh loads tool paths and Oh My Zsh" exec_user 'env -i HOME="$HOME" USER="$USER" TERM=xterm-256color PATH=/usr/bin:/bin zsh -ic '\''[[ "$ANDROID_HOME" == "$HOME/Android/Sdk" && "$ZSH" == "$HOME/.oh-my-zsh" && ":$PATH:" == *":$HOME/fvm/bin:"* && ":$PATH:" == *":$HOME/.local/bin:"* ]] && whence -w omz'\'''
 check "Neovim meets LazyVim minimum version" exec_login 'nvim --clean --headless '\''+lua if vim.fn.has("nvim-0.11.2") == 0 then os.exit(1) end'\'' +qa'
+check "RTK installed" exec_login 'rtk --version'
 check "git works" exec_user 'git --version'
 
 if [[ "${SKIP_ANDROID:-0}" != "1" ]]; then
