@@ -4,7 +4,8 @@ set -euo pipefail
 # Register the cliproxy models with t3code's Claude provider. t3code ships a
 # fixed Claude model list and does not query the gateway like Claude CLI does,
 # so only the claudeAgent customModels array in its settings.json is replaced;
-# every other setting is left untouched.
+# every other setting is left untouched. t3code only writes the claudeAgent
+# instance once its settings are edited, so a default one is created if absent.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=../lib.sh
@@ -25,13 +26,13 @@ if ! command -v jq >/dev/null 2>&1; then
   exit 0
 fi
 
-if ! jq -e '.providerInstances.claudeAgent' "$SETTINGS_FILE" >/dev/null; then
-  say "⏭️  t3code has no claudeAgent provider configured; skipping."
-  exit 0
-fi
-
-updated="$(jq --slurpfile models "$MODELS_FILE" \
-  '.providerInstances.claudeAgent.config.customModels = $models[0]' \
+updated="$(jq --slurpfile models "$MODELS_FILE" '
+  .providerInstances.claudeAgent //= {
+    driver: "claudeAgent",
+    enabled: true,
+    config: {binaryPath: "claude", homePath: "", launchArgs: "", autoCompactWindow: ""}
+  }
+  | .providerInstances.claudeAgent.config.customModels = $models[0]' \
   "$SETTINGS_FILE")"
 
 if [[ "$(jq -S . "$SETTINGS_FILE")" == "$(jq -S . <<<"$updated")" ]]; then
@@ -39,7 +40,7 @@ if [[ "$(jq -S . "$SETTINGS_FILE")" == "$(jq -S . <<<"$updated")" ]]; then
   exit 0
 fi
 
-if pgrep -f "T3 Code" >/dev/null 2>&1; then
+if pgrep -f "T3 Code|t3 serve" >/dev/null 2>&1; then
   say "⚠️  t3code is running and may overwrite this change; restart it afterwards."
 fi
 
