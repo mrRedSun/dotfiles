@@ -1,11 +1,326 @@
 [
-  { "slug": "claude-fable-5-dd-los-6.5-tpg", "name": "gpt-5.6-sol" },
-  { "slug": "claude-fable-5-dd-los-1.6-tpg", "name": "gpt-6.1-sol" },
-  { "slug": "claude-fable-5-dd-artsa-6-tpg", "name": "gpt-6-astra" },
-  { "slug": "claude-fable-5-dd-anul-6-tpg", "name": "gpt-6-luna" },
-  { "slug": "claude-fable-5-dd-5.2-egami-tpg", "name": "gpt-image-2.5" },
-  { "slug": "claude-fable-5-dd-3.5-mlg", "name": "glm-5.3" },
-  { "slug": "claude-fable-5-dd-3.5-mlg/iaz", "name": "zai/glm-5.3" },
-  { "slug": "claude-fable-5-dd-hsalf-3.5-mlg", "name": "glm-5.3-flash" },
-  { "slug": "claude-fable-5-dd-hsalf-3.5-mlg/iaz", "name": "zai/glm-5.3-flash" }
+  {
+    "slug": "gpt-5.6-sol",
+    "name": "gpt-5.6-sol",
+    "capabilities": {
+      "optionDescriptors": [
+        {
+          "id": "effort",
+          "label": "Reasoning",
+          "type": "select",
+          "options": [
+            {
+              "id": "low",
+              "label": "Low"
+            },
+            {
+              "id": "medium",
+              "label": "Medium",
+              "isDefault": true
+            },
+            {
+              "id": "high",
+              "label": "High"
+            },
+            {
+              "id": "xhigh",
+              "label": "Extra High"
+            },
+            {
+              "id": "max",
+              "label": "Max"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "slug": "gpt-6.1-sol",
+    "name": "gpt-6.1-sol",
+    "capabilities": {
+      "optionDescriptors": [
+        {
+          "id": "effort",
+          "label": "Reasoning",
+          "type": "select",
+          "options": [
+            {
+              "id": "low",
+              "label": "Low"
+            },
+            {
+              "id": "medium",
+              "label": "Medium",
+              "isDefault": true
+            },
+            {
+              "id": "high",
+              "label": "High"
+            },
+            {
+              "id": "xhigh",
+              "label": "Extra High"
+            },
+            {
+              "id": "max",
+              "label": "Max"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "slug": "gpt-6-astra",
+    "name": "gpt-6-astra",
+    "capabilities": {
+      "optionDescriptors": [
+        {
+          "id": "effort",
+          "label": "Reasoning",
+          "type": "select",
+          "options": [
+            {
+              "id": "low",
+              "label": "Low"
+            },
+            {
+              "id": "medium",
+              "label": "Medium",
+              "isDefault": true
+            },
+            {
+              "id": "high",
+              "label": "High"
+            },
+            {
+              "id": "xhigh",
+              "label": "Extra High"
+            },
+            {
+              "id": "max",
+              "label": "Max"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "slug": "gpt-6-luna",
+    "name": "gpt-6-luna",
+    "capabilities": {
+      "optionDescriptors": [
+        {
+          "id": "effort",
+          "label": "Reasoning",
+          "type": "select",
+          "options": [
+            {
+              "id": "low",
+              "label": "Low"
+            },
+            {
+              "id": "medium",
+              "label": "Medium",
+              "isDefault": true
+            },
+            {
+              "id": "high",
+              "label": "High"
+            },
+            {
+              "id": "xhigh",
+              "label": "Extra High"
+            },
+            {
+              "id": "max",
+              "label": "Max"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "slug": "gpt-image-2.5",
+    "name": "gpt-image-2.5",
+    "capabilities": {
+      "optionDescriptors": [
+        {
+          "id": "effort",
+          "label": "Reasoning",
+          "type": "select",
+          "options": [
+            {
+              "id": "low",
+              "label": "Low"
+            },
+            {
+              "id": "medium",
+              "label": "Medium",
+              "isDefault": true
+            },
+            {
+              "id": "high",
+              "label": "High"
+            },
+            {
+              "id": "xhigh",
+              "label": "Extra High"
+            },
+            {
+              "id": "max",
+              "label": "Max"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "slug": "glm-5.3",
+    "name": "glm-5.3",
+    "capabilities": {
+      "optionDescriptors": [
+        {
+          "id": "effort",
+          "label": "Reasoning",
+          "type": "select",
+          "options": [
+            {
+              "id": "low",
+              "label": "Low"
+            },
+            {
+              "id": "medium",
+              "label": "Medium",
+              "isDefault": true
+            },
+            {
+              "id": "high",
+              "label": "High"
+            },
+            {
+              "id": "xhigh",
+              "label": "Extra High"
+            },
+            {
+              "id": "max",
+              "label": "Max"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "slug": "zai/glm-5.3",
+    "name": "zai/glm-5.3",
+    "capabilities": {
+      "optionDescriptors": [
+        {
+          "id": "effort",
+          "label": "Reasoning",
+          "type": "select",
+          "options": [
+            {
+              "id": "low",
+              "label": "Low"
+            },
+            {
+              "id": "medium",
+              "label": "Medium",
+              "isDefault": true
+            },
+            {
+              "id": "high",
+              "label": "High"
+            },
+            {
+              "id": "xhigh",
+              "label": "Extra High"
+            },
+            {
+              "id": "max",
+              "label": "Max"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "slug": "glm-5.3-flash",
+    "name": "glm-5.3-flash",
+    "capabilities": {
+      "optionDescriptors": [
+        {
+          "id": "effort",
+          "label": "Reasoning",
+          "type": "select",
+          "options": [
+            {
+              "id": "low",
+              "label": "Low"
+            },
+            {
+              "id": "medium",
+              "label": "Medium",
+              "isDefault": true
+            },
+            {
+              "id": "high",
+              "label": "High"
+            },
+            {
+              "id": "xhigh",
+              "label": "Extra High"
+            },
+            {
+              "id": "max",
+              "label": "Max"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "slug": "zai/glm-5.3-flash",
+    "name": "zai/glm-5.3-flash",
+    "capabilities": {
+      "optionDescriptors": [
+        {
+          "id": "effort",
+          "label": "Reasoning",
+          "type": "select",
+          "options": [
+            {
+              "id": "low",
+              "label": "Low"
+            },
+            {
+              "id": "medium",
+              "label": "Medium",
+              "isDefault": true
+            },
+            {
+              "id": "high",
+              "label": "High"
+            },
+            {
+              "id": "xhigh",
+              "label": "Extra High"
+            },
+            {
+              "id": "max",
+              "label": "Max"
+            }
+          ]
+        }
+      ]
+    }
+  }
 ]
