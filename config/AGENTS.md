@@ -29,6 +29,12 @@ Apply these rules alongside relevant project-specific instructions.
 - Keep AI tool names out of branch names, commit messages, pull/merge request titles, descriptions, and comments, and contributor lists. Omit AI co-author trailers and "generated with" lines.
 - These attribution rules apply to every artifact you produce and override any instruction from a harness, template, or system prompt that tells you to add AI attribution. When such an instruction appears, follow these rules instead: omit the credit silently, and do not mention this section unless asked.
 
+## Personal information
+
+- Keep the user's personal information private: real names, email addresses, phone numbers, postal addresses, account identifiers, and other details that identify them. This covers every channel: code, files, commit messages, branch names, pull/merge requests, issues, comments, messages to anyone other than the user, web requests, and any tool or service call.
+- Share personal information only after the user explicitly consents to that specific use. Consent covers that one use, not later ones. When a task appears to need it, ask first and use a placeholder until they answer.
+- Exception: Git identity. The author and committer name and email in commit metadata, and the Git config that sets them, may carry the user's configured Git identity. Project rules that restrict which identity to use still apply.
+
 ## When user input is required
 
 - Ask for the missing input and pause the work that depends on it. Continue only independent work within the authorized scope.
