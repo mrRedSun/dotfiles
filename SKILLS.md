@@ -18,6 +18,7 @@ These are the reusable, project-independent skills included in this repository.
 | `how` | Explain runtime flow, ownership, and architecture in an unfamiliar codebase. |
 | `i-have-adhd` | ADHD-friendly output: action first, numbered steps, visible wins, no preamble. Always applies. |
 | `interrogate` | Run independent adversarial reviews and synthesize their findings. |
+| `redrop` | Publish reports, pages, files, and static sites as private links with the `redrop` CLI. |
 | `resolving-merge-conflicts` | Resolve Git merge or rebase conflicts while preserving intent. |
 | `retro` | Review a finished session and propose environment fixes: checks, navigation pointers, standards (`/retro`). |
 | `show-me-your-work` | Keep a decision log for long-running or unattended work. |
