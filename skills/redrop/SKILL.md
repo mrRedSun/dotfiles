@@ -25,7 +25,8 @@ The user supplies the server URL and token through that setup. Wait for them; a 
 
 Every artifact is served from its own sandboxed origin (`https://<slug>.usercontent.example/`), with no backend. Build for that:
 
-- **Reports, charts, single pages:** one self-contained `.html` file. Inline CSS and JS; CDN scripts work.
+- **Documents, explainers, reports, guides:** unless the user wants another look, copy [`templates/doc-page.html`](templates/doc-page.html) to `index.html`, then fill it in following its comments. It is self-contained and has light and dark themes.
+- **Charts and other single pages:** one self-contained `.html` file. Inline CSS and JS; CDN scripts work.
 - **Multi-page sites and prototypes:** a directory with `index.html` at the root and relative paths throughout. A client-side router needs `--spa`, so unknown extension-less paths serve the entry page.
 - **Anything else** (PDF, image, CSV, archive): share the file as is. Viewers get an inline preview and a Download button.
 - **State:** keep it in the page. `localStorage` works and is isolated per artifact. The page has no login, no cookies from the user's other sites, and no server of its own to call. Leave secrets and API keys out of it: anyone with the link can read the source.
