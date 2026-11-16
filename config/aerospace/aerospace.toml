@@ -196,6 +196,9 @@ automatically-unhide-macos-hidden-apps = true
 [[on-window-detected]]
     if.app-id = 'net.kovidgoyal.kitty'
     run = ['move-node-to-workspace T']
+[[on-window-detected]]
+    if.app-id = 'app.reglance'
+    run = ['move-node-to-workspace T']
 
 # Keep WezTerm windows in their current workspace and default layout.
 [[on-window-detected]]
