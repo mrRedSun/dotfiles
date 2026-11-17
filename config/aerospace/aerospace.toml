@@ -175,6 +175,9 @@ automatically-unhide-macos-hidden-apps = true
     if.app-id = 'company.thebrowser.Browser'
     run = ['move-node-to-workspace W']
 [[on-window-detected]]
+    if.app-id = 'company.thebrowser.dia'
+    run = ['move-node-to-workspace W']
+[[on-window-detected]]
     if.app-id = 'app.zen-browser.zen'
     run = ['move-node-to-workspace W']
 
