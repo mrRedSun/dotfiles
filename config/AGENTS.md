@@ -15,6 +15,7 @@ Apply these rules alongside relevant project-specific instructions.
 - Write the smallest clear solution that meets the success criteria, using the project's conventions.
 - Tie each abstraction, option, and error-handling path to a concrete use case in the current request.
 - Keep changes within the task's scope. Remove dead code caused by the change; reserve unrelated cleanup for a separate task.
+- When adding a dependency, tool, runtime, or CI action, look up its latest stable release from the registry or upstream (`npm view <pkg> version`, PyPI, GitHub releases, etc.) and start from that version, using its current docs for the API. Treat versions from memory or local caches as stale until checked.
 
 ## Verify
 
