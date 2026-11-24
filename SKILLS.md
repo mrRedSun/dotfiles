@@ -16,7 +16,6 @@ These are the reusable, project-independent skills included in this repository.
 | `grilling` | Stress-test a plan through focused rounds of questions. |
 | `handoff` | Turn the current work into a continuation document for another agent. |
 | `how` | Explain runtime flow, ownership, and architecture in an unfamiliar codebase. |
-| `i-have-adhd` | ADHD-friendly output: action first, numbered steps, visible wins, no preamble. Always applies. |
 | `interrogate` | Run independent adversarial reviews and synthesize their findings. |
 | `redrop` | Publish reports, pages, files, and static sites as private links with the `redrop` CLI. |
 | `resolving-merge-conflicts` | Resolve Git merge or rebase conflicts while preserving intent. |
@@ -26,7 +25,6 @@ These are the reusable, project-independent skills included in this repository.
 | `tdd` | Write a focused failing regression test before fixing a bug when practical. |
 | `teach` | Combine how and why into one clear explanation. |
 | `technical-writing` | Write and review concise, structured technical documentation. |
-| `unslop` | Remove AI writing patterns, filler, and unnatural phrasing. |
 | `why` | Investigate the historical reason for code or design decisions using available evidence. |
 | `writing-for-agents` | Write skills and other agent-facing instructions, including `AGENTS.md`. |
 
