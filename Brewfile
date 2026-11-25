@@ -1,5 +1,6 @@
 # Package taps used by selected dependencies.
 tap "leoafarias/fvm"
+tap "mrredsun/reglance"
 tap "nikitabobko/tap"
 tap "pear-devs/pear"
 tap "xcodesorg/made"
@@ -72,7 +73,7 @@ brew "mpv"
 brew "tectonic"
 
 # Terminals, editors, and dev apps.
-cask "arc"
+cask "ardia"
 cask "chatgpt"
 cask "codex"
 cask "fork"
@@ -83,7 +84,9 @@ cask "pear-devs/pear/pear-desktop"
 cask "postman"
 cask "raycast"
 cask "rectangle-pro"
+cask "t3-code"
 cask "visual-studio-code"
+brew "mrredsun/reglance/reglance"
 
 # Mac App Store apps.
 mas "PastePal", id: 1503446680
